@@ -1,0 +1,109 @@
+@font-face {
+  font-family: 'Lexend-SemiBold';
+  src: url(./assets/fonts/Lexend-SemiBold.ttf);
+}
+
+@font-face {
+  font-family: 'Lexend-Bold';
+  src: url(./assets/fonts/Lexend-Bold.ttf);
+}
+
+@font-face {
+  font-family: 'Lexend-Regular';
+  src: url(./assets/fonts/Lexend-Regular.ttf);
+}
+
+@font-face {
+  font-family: 'Lexend-Light';
+  src: url(./assets/fonts/Lexend-Light.ttf);
+}
+
+@font-face {
+  font-family: 'Lexend-Medium';
+  src: url(./assets/fonts/Lexend-Medium.ttf);
+}
+
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  
+  --primary: #2D4059;
+  --secondary: #496994;
+  --bg-container: rgba(255, 255, 255, 0.226);
+  --bg-container-hover: rgba(255, 255, 255, 0.315);
+  --nav: #e6f2ff;
+  --border-container: 1px solid rgba(255, 255, 255, 0.31);
+  --text-hover: #1c2836;
+
+  /* Quelli commentati sono fissi */
+  /* --bg-otherinfo: linear-gradient(111.59deg, var(--primary) 3.28%, var(--secondary) 98.14%); */
+  /* --btn-search: var(--primary); */
+  --theme-slider: var(--primary);
+  --theme-slider-text: #F8F8F8;
+  --theme-slider-nav: rgba(177, 230, 255, 0.507);
+
+  --bg: rgba(168, 220, 252, 0.99);
+
+  --unit-not-selected: #658fc5;
+
+  --box-shadow: 0px 12px 18px rgba(164, 207, 255, 0.5);
+}
+
+[data-theme='dark']{
+  --primary: #f0f0f0;
+  --secondary: #587299;
+  --bg-container: rgba(17, 26, 39, 0.44);
+  --bg-container-hover: rgba(17, 26, 39, 0.466);
+  --nav: #233c5c;
+  --border-container: 1px solid rgba(86, 118, 160, 0.295);
+  --text-hover: #dfdfdf;
+
+  /* Quelli commentati sono fissi */
+  /* --bg-otherinfo: linear-gradient(111.59deg, var(--primary) 3.28%, var(--secondary) 98.14%); */
+  /* --btn-search: var(--primary); */
+  --theme-slider: var(--primary);
+  --theme-slider-text: #2D4059;
+  --theme-slider-nav: var(--bg-container);
+
+  --bg: #1B2D47;
+
+  --unit-not-selected: #445877;
+
+  --box-shadow: 0px 12px 18px rgba(17, 26, 39, 0.3);
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html{
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Lexend-Regular', system-ui;
+  background: var(--bg);
+
+  min-height: 100vh;
+}
+
+#root{
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
+
+  padding: 20px 8%;
+  overflow-x: hidden;
+}
+
+#root > *{
+  width: 100%;
+  max-width: 1400px;
+}
