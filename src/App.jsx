@@ -30,12 +30,8 @@ const App = () => {
   const [unit, setUnit] = useStorageState('unit', 'c');
 
   const themeHandle = (e) => {
-    console.log(e.target.id);
-
     if(theme == e.target.id)
       return;
-    
-    console.log(e);
 
     setTheme(e.target.id);
     document.body.setAttribute('data-theme', e.target.id);
