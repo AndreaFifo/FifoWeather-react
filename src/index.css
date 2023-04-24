@@ -38,12 +38,10 @@
   --border-container: 1px solid rgba(255, 255, 255, 0.31);
   --text-hover: #1c2836;
 
-  /* Quelli commentati sono fissi */
-  /* --bg-otherinfo: linear-gradient(111.59deg, var(--primary) 3.28%, var(--secondary) 98.14%); */
-  /* --btn-search: var(--primary); */
   --theme-slider: var(--primary);
   --theme-slider-text: #F8F8F8;
-  --theme-slider-nav: rgba(177, 230, 255, 0.507);
+  --theme-slider-nav: white;
+  --theme-slider-nav-box-shadow: 0 10px 20px rgba(129, 129, 129, 0.11);
 
   --bg: rgba(168, 220, 252, 0.99);
 
@@ -61,12 +59,10 @@
   --border-container: 1px solid rgba(86, 118, 160, 0.295);
   --text-hover: #dfdfdf;
 
-  /* Quelli commentati sono fissi */
-  /* --bg-otherinfo: linear-gradient(111.59deg, var(--primary) 3.28%, var(--secondary) 98.14%); */
-  /* --btn-search: var(--primary); */
   --theme-slider: var(--primary);
   --theme-slider-text: #2D4059;
   --theme-slider-nav: var(--bg-container);
+  --theme-slider-nav-box-shadow: 0 10px 20px rgba(9, 16, 26, 0.123);
 
   --bg: #1B2D47;
 

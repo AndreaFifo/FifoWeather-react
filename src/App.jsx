@@ -1,17 +1,9 @@
-import React from 'react';
 import Navbar from './components/NavBar/Navbar';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, createContext } from 'react';
 import './App.css';
 
-window.addEventListener('load', () => {
-  if(!localStorage.getItem('theme'))
-    localStorage.setItem('theme', 'light');
-
-  if(!localStorage.getItem('lang'))
-    localStorage.setItem('lang', 'en');
-
-  document.body.setAttribute('data-theme', localStorage.getItem('theme'));
-})
+//Creation of context to manage states globally
+export const Context = createContext();
 
 //Custom hook
 const useStorageState = (localStorageKey, initialState) => {
@@ -25,31 +17,39 @@ const useStorageState = (localStorageKey, initialState) => {
 }
 
 const App = () => {
+  //It does the same thing of window.onLoad
+  useEffect(() => {
+    if(!localStorage.getItem('theme'))
+      localStorage.setItem('theme', 'light');
+  
+    if(!localStorage.getItem('lang'))
+      localStorage.setItem('lang', 'en_US');
+  
+    document.body.setAttribute('data-theme', localStorage.getItem('theme'));
+  }, []);
+
   const [theme, setTheme] = useStorageState('theme', 'light');
-  const [language, setLanguage] = useStorageState('lang', 'en');
+  const [language, setLanguage] = useStorageState('lang', 'en_US');
   const [unit, setUnit] = useStorageState('unit', 'c');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const themeHandle = (e) => {
-    console.log(e.target.id);
-
-    if(theme == e.target.id)
+    if(theme === e.target.id)
       return;
-    
-    console.log(e);
 
     setTheme(e.target.id);
     document.body.setAttribute('data-theme', e.target.id);
   }
 
   const languageHandle = (e) => {
-    if(language == e.target.id)
+    if(language === e.target.id)
       return;
 
     setLanguage(e.target.id);
   }
 
   const unitHandle = (e) => {
-    if(unit == e.target.id)
+    if(unit === e.target.id)
       return;
 
     setUnit(e.target.id);
@@ -57,11 +57,18 @@ const App = () => {
 
   return (
     <>
-      <Navbar 
-        language={{language: language, handle: languageHandle}} 
-        theme={{theme: theme, handle: themeHandle}}
-        unit={{unit: unit, handle: unitHandle}}
-      />
+      <Context.Provider 
+        value={
+          {
+            theme: {theme, themeHandle}, 
+            language: {language, languageHandle},
+            unit: {unit, unitHandle},
+            searchTerm: {searchTerm, setSearchTerm}
+          }
+        }
+      >
+        <Navbar />
+      </Context.Provider>
     </>
   )
 }
