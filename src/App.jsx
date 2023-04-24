@@ -37,6 +37,7 @@ const App = () => {
     if(theme === e.target.id)
       return;
 
+
     setTheme(e.target.id);
     document.body.setAttribute('data-theme', e.target.id);
   }
