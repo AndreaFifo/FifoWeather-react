@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext} from "react";
 import { Context } from '../../../App';
 import { Search, X, MapPin, Trash2} from 'react-feather'
 
@@ -11,8 +11,7 @@ const Searchbar = () => {
             return city;
     }) || searchedCities;
     const finalCities = !filteredSearchedCities.length ? searchedCities : filteredSearchedCities;
-
-    console.log('Searchbar render');
+    
     return (
         <div className="search-input">
             <Search size={22} className='btn'/>

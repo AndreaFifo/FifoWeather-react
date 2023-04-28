@@ -1,4 +1,4 @@
-import Navbar from './components/NavBar/Navbar';
+import MemoNavbar from './components/NavBar/Navbar';
 import { useState, useEffect, createContext } from 'react';
 import './App.css';
 
@@ -72,7 +72,7 @@ const App = () => {
           }
         }
       >
-        <Navbar />
+        <MemoNavbar />
       </Context.Provider>
     </>
   )
