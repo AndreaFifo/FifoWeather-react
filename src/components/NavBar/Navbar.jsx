@@ -1,13 +1,14 @@
 import { useState, useContext } from 'react';
-import { Sun, Moon, Globe, Search, X } from 'react-feather';
+import { Sun, Moon, Globe} from 'react-feather';
 import { italy, uk, spain } from '../../assets';
 import { Context } from '../../App';
+import Searchbar from './Searchbar/Searchbar';
 import './navbar.css';
 
 const Navbar = () => {
     const [sideMenu, setSideMenu] = useState(false);
 
-    const { theme, language, unit, searchTerm } = useContext(Context);
+    const {theme, language, unit} = useContext(Context);
 
     const handleSideMenu = (e) => {
         e.currentTarget.classList.toggle('open')
@@ -26,12 +27,7 @@ const Navbar = () => {
             <nav>
                 <h1 className='logo'>FifoWeather</h1>
 
-                {window.innerWidth > 800 && (<div className="search-input">
-                    <Search size={22} className='btn'/>
-                    {searchTerm.searchTerm && (<X size={22} className='btn' onClick={() => {document.getElementById('search').value = ''; searchTerm.setSearchTerm('')}}/>)}
-                    
-                    <input type="text" name="search" id="search" placeholder='Search city...' onChange={(e) => searchTerm.setSearchTerm(e.target.value)} />
-                </div>)}
+                {window.innerWidth > 800 && (<Searchbar />)}
 
                 <div className="hamburger" onClick={handleSideMenu}>
                     <div className="line" />
@@ -67,12 +63,7 @@ const Navbar = () => {
                 </div>
             </nav>
 
-            {window.innerWidth < 800 && (<div className="search-input lg">
-                <Search size={22} className='btn'/>
-                {searchTerm.searchTerm && (<X size={22} className='btn' onClick={() => {document.getElementById('search').value = ''}}/>)}
-                
-                <input type="text" name="search" id="search" placeholder='Search city...' onChange={(e) => searchTerm.setSearchTerm(e.target.value)} />
-            </div>)}
+            {window.innerWidth < 800 && (<Searchbar />)}
         </div>
     )
 }

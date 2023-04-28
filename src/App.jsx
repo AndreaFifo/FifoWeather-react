@@ -56,6 +56,10 @@ const App = () => {
     setUnit(e.target.id);
   }
 
+  const searchTermHandle = (value) => {
+    setSearchTerm(value);
+  }
+
   return (
     <>
       <Context.Provider 
@@ -64,7 +68,7 @@ const App = () => {
             theme: {theme, themeHandle}, 
             language: {language, languageHandle},
             unit: {unit, unitHandle},
-            searchTerm: {searchTerm, setSearchTerm}
+            searchTerm: {searchTerm, searchTermHandle}
           }
         }
       >
