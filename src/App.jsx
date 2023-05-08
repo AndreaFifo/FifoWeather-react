@@ -1,9 +1,11 @@
-import MemoNavbar from './components/NavBar/Navbar';
+import Navbar from './components/NavBar/Navbar';
+import Main from './components/Main/Main';
 import { useState, useEffect, createContext } from 'react';
 import './App.css';
 
 //Creation of context to manage states globally
-export const Context = createContext();
+export const GlobalContext = createContext();
+//export const WeatherContext = createContext();
 
 //Custom hook
 const useStorageState = (localStorageKey, initialState) => {
@@ -32,6 +34,7 @@ const App = () => {
   const [language, setLanguage] = useStorageState('lang', 'en_US');
   const [unit, setUnit] = useStorageState('unit', 'c');
   const [searchTerm, setSearchTerm] = useState('');
+  const [searching, setSearching] = useState(false);
 
   const themeHandle = (e) => {
     if(theme === e.target.id)
@@ -62,18 +65,20 @@ const App = () => {
 
   return (
     <>
-      <Context.Provider 
+      <GlobalContext.Provider 
         value={
           {
             theme: {theme, themeHandle}, 
             language: {language, languageHandle},
             unit: {unit, unitHandle},
-            searchTerm: {searchTerm, searchTermHandle}
+            searchTerm: {searchTerm, searchTermHandle},
+            searching: {searching, setSearching},
           }
         }
       >
-        <MemoNavbar />
-      </Context.Provider>
+        <Navbar />
+        <Main />
+      </GlobalContext.Provider>
     </>
   )
 }

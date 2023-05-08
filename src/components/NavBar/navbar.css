@@ -90,6 +90,10 @@ nav .search-input{
     transition: height 0.5s ease-in-out;
 }
 
+input:focus ~ .dropdown-search, .dropdown-search.open:hover{
+    height: 200px;
+}
+
 .dropdown-search.open{
     height: 200px;
 }

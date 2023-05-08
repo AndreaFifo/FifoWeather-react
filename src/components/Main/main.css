@@ -1,0 +1,44 @@
+main{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+main .general-info{
+    background: var(--bg-container);
+    border: var(--border-container);
+    border-radius: 16px;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    min-width: 400px;
+
+    padding: 30px;
+}
+
+.general-info .header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header .city-date .day{
+    font-family: 'Lexend-Medium';
+    color: var(--secondary);
+}
+
+.header .city-date .city, .header .temp{
+    font-family: 'Lexend-SemiBold';
+    color: var(--primary);
+}
+
+.header .city-date .city{
+    font-size: 28px;
+    margin-top: 5px;
+}
+
+.header .temp{
+    font-size: 36px;
+}

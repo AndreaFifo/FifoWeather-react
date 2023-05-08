@@ -1,9 +1,9 @@
-import { Context } from "../../../App";
+import { GlobalContext } from "../../../App";
 import { Sun, Moon } from 'react-feather';
 import { useContext } from "react";
 
 const ThemeSlider = () => {
-    const {theme} = useContext(Context);
+    const {theme} = useContext(GlobalContext);
     
     return (
         <div className="theme-slider">

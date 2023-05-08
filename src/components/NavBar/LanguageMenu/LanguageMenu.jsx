@@ -1,6 +1,6 @@
 import { Globe } from 'react-feather';
 import { useContext} from "react";
-import { Context } from "../../../App";
+import { GlobalContext } from "../../../App";
 import { italy, uk, spain } from '../../../assets';
 
 const langs = [
@@ -10,7 +10,7 @@ const langs = [
 ];
 
 const LanguageMenu = () => {
-    const { language } = useContext(Context);
+    const { language, searching } = useContext(GlobalContext);
 
     return (
         <div className="language-part">
@@ -19,7 +19,7 @@ const LanguageMenu = () => {
             <ul className="language-dropdown">
                 {
                     langs.map(lang => 
-                        <li key={lang.id} id={lang.id} onClick={language.languageHandle} className={language.language === lang.id ? 'selected' : ''}>
+                        <li key={lang.id} id={lang.id} onClick={(e) => {language.languageHandle(e); !searching.searching ? searching.setSearching(true) : null}} className={language.language === lang.id ? 'selected' : ''}>
                             <img src={lang.flag} alt={lang.label} />
                             <p>{lang.label}</p>
                         </li>
