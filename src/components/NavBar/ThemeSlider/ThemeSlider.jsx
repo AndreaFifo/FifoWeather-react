@@ -3,7 +3,7 @@ import { Sun, Moon } from 'react-feather';
 import { useContext } from "react";
 
 const ThemeSlider = () => {
-    const {theme} = useContext(GlobalContext);
+    const { theme } = useContext(GlobalContext);
     
     return (
         <div className="theme-slider">

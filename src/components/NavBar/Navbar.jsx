@@ -38,5 +38,3 @@ const Navbar = () => {
 }
 
 export default Navbar;
-
-//fsq3ss1C9OUVrKEIvzaZsW2xurYYAdce4rituxeIdUJQvtc=

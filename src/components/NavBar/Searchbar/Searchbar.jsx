@@ -1,9 +1,9 @@
-import { useContext} from "react";
+import { useContext, useMemo } from "react";
 import { GlobalContext } from '../../../App';
-import { Search, X, MapPin, Trash2} from 'react-feather'
+import { Search, X, MapPin, Trash2 } from 'react-feather'
 
 const Searchbar = () => {
-    const {searchTerm, searching} = useContext(GlobalContext);
+    const { searchTerm, searchDataHandle } = useContext(GlobalContext);
 
     let searchedCities = JSON.parse(localStorage.getItem('searchedCities') || JSON.stringify([{name: 'palermo'}, {name: 'milano'}, {name: 'catania'}]));
     let filteredSearchedCities = searchedCities.filter((city) => {
@@ -15,19 +15,19 @@ const Searchbar = () => {
     return (
         <div className="search-input">
             <Search size={22} className='btn'/>
-            {searchTerm.searchTerm && (<X size={22} className='btn del' onClick={() => {document.getElementById('search').value = ''; document.querySelector('.dropdown-search').classList.remove('open'); searchTerm.searchTermHandle('')}}/>)}
+            {searchTerm && (<X size={22} className='btn del' onClick={() => {document.getElementById('search').value = ''; document.querySelector('.dropdown-search').classList.remove('open'); searchTerm.setSearchTerm('')}}/>)}
             
             <input 
                 type="text" name="search" id="search" placeholder='Search city...' autoComplete="off"
-                value={searchTerm.searchTerm} 
+                ref={searchTerm}
                 onBlur={() => document.querySelector('.dropdown-search').classList.remove('open')} 
-                onChange={(e) => {searchTerm.searchTermHandle(e.target.value)}} 
+                
                 onFocus={() => document.querySelector('.dropdown-search').classList.add('open')} 
                 onKeyDown={(e) => {
                     if(e.code === 'Enter' && e.target.value !== ''){
                         document.querySelector('.dropdown-search').classList.remove('open');
                         e.target.blur();
-                        searching.setSearching(true);
+                        searchDataHandle(e.target.value, true);
                     }}
                 }
             />
@@ -47,9 +47,9 @@ const Searchbar = () => {
                         return(
                             <div key={index} className="city" 
                                 onClick={() => {
-                                    searchTerm.searchTermHandle(city.name); 
+                                    searchTerm.current.value = city.name;
                                     document.querySelector('.dropdown-search').classList.remove('open');
-                                    searching.setSearching(true);
+                                    searchDataHandle(city.name);
                                 }}
                             >
                                 <MapPin size={20} className='mapin'/>

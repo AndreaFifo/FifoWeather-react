@@ -1,7 +1,19 @@
 main{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: grid;
+    gap: 60px;
+    grid-auto-columns: 0.5fr 1fr;
+    grid-auto-rows: 1fr;
+    grid-template-areas: 
+        "generalInfo forecast"
+        "generalInfo graph";
+
+    height: 100%;
+}
+
+@media screen and (max-width: 1260px) {
+    main{
+        grid-auto-columns: 0.75fr 1fr;
+    }
 }
 
 main .general-info{
@@ -11,11 +23,16 @@ main .general-info{
     
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
+    gap: 40px;
 
-    min-width: 400px;
+    max-width: 420px;
+    width: 100%;
 
-    padding: 30px;
+    padding: 20px 30px;
+    overflow: hidden;
+
+    grid-area: generalInfo;
 }
 
 .general-info .header{
@@ -27,6 +44,7 @@ main .general-info{
 .header .city-date .day{
     font-family: 'Lexend-Medium';
     color: var(--secondary);
+    font-size: clamp(0.75rem, 0.1667rem + 3.3333vw, 1rem);
 }
 
 .header .city-date .city, .header .temp{
@@ -35,10 +53,308 @@ main .general-info{
 }
 
 .header .city-date .city{
-    font-size: 28px;
-    margin-top: 5px;
+    font-size: clamp(1.5rem, 0.9167rem + 3.3333vw, 1.75rem);
+
+    text-transform: capitalize;
 }
 
 .header .temp{
-    font-size: 36px;
+    font-size: clamp(1.75rem, 1.1667rem + 3.3333vw, 2rem);
 }
+
+.general-info .weather, .weather .text, .other-info div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.weather .text h2{
+    font-size: clamp(2.125rem, 1.9792rem + 0.8333vw, 2.5rem);
+    color: var(--primary);
+    font-family: 'Lexend-SemiBold';
+}
+
+.weather .text h3{
+    font-size: clamp(1.5rem, 1.3542rem + 0.8333vw, 1.875rem);
+    color: var(--secondary);
+    text-transform: capitalize;
+}
+
+.weather img{
+    width: 150px;
+}
+
+.general-info .other-info{
+    background: var(--otherinfo-bg);
+    border: var(--border-container);
+    padding: 20px;
+    border-radius: 8px;
+
+    overflow-y: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    row-gap: 10px;
+
+    width: 100%;
+}
+
+.other-info h3{
+    align-self: flex-start;
+    color: white;
+}
+
+.other-info div{
+    width: 33%;
+    /* min-width: 75px; */
+    
+    gap: 3px;
+    color: white;
+}
+
+.other-info div h4{
+    font-family: 'Lexend-SemiBold';
+    font-size: clamp(0.8125rem, 0.4087rem + 2.3077vw, 1rem);
+}
+
+.other-info div p{
+    font-size: clamp(0.75rem, 0.4808rem + 1.5385vw, 0.875rem);
+    font-family: 'Lexend-Light';
+    color: rgb(218, 218, 218);
+}
+
+@media screen and (max-width: 1005px){
+    main{
+        grid-auto-columns: 1fr;
+        grid-auto-rows: auto;
+        place-items: center;
+        grid-template-areas: 
+            "generalInfo"
+            "forecast"
+            "graph";
+        row-gap: 50px;
+    }
+
+    main .general-info{
+        max-width: 350px;
+    }
+
+    .general-info .weather img{
+        width: 100px;
+    }
+}
+
+@media screen and (max-width: 370px){
+    main .general-info{
+        padding: 20px 15px;
+        gap: 30px;
+    }
+
+    .general-info .other-info{
+        padding: 20px 5px;
+    }    
+}
+
+.forecast{
+    width: 100%;
+    grid-area: forecast;
+
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 20px;
+
+    overflow-x: hidden;
+}
+
+.forecast .types{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+
+    position: relative;
+}
+
+.types .type{
+    height: 20px;
+
+    color: var(--secondary);
+    font-family: 'Lexend-Medium';
+}
+
+.types .type:hover{
+    cursor: pointer;
+}
+
+.types .type.selected{
+    color: var(--primary);
+}
+
+.types .line{
+    position: absolute;
+
+    width: 40px;
+    height: 2px;
+
+    background: var(--primary);
+
+    transition: transform 0.3s ease-in-out;
+}
+
+.splide{
+    width: 100%;
+
+    position: relative;
+}
+
+.splide{
+    cursor: move;
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+}
+
+.splide:active{
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+}
+
+.splide__slide{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.splide__slide div:not(.bottom-text){
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    background: var(--bg-container);
+    border: var(--border-container);
+    border-radius: 16px;
+
+    padding: 15px 10px;
+}
+
+.splide__slide .bottom-text{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.splide__slide img{
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+}
+
+.splide__slide > *{
+    font-family: 'Lexend-SemiBold';
+}
+
+.splide__slide .hour, .splide__slide .temp{
+    color: var(--primary);
+}
+
+.splide__slide .temp{
+    font-size: 22px;
+}
+
+.splide__slide .weather{
+    color: var(--secondary);
+    font-size: 20px;
+}
+
+.splide:not(.is-overflow) .splide__arrows {
+    display: none;
+  }
+
+.splide__track{
+    overflow: visible;
+}
+
+.splide__pagination{
+    display: block;
+    bottom: -25px;
+    left: 50%;
+
+    width: max-content;
+}
+
+.splide__arrow{
+    background: var(--btn-slider-bg);
+}
+
+.splide__arrow svg{
+    fill: var(--btn-slider-fill)
+}
+
+.splide__arrow--prev{
+    left: 0 !important;
+    z-index: 2;
+}
+
+.splide__arrow--next{
+    right: 0 !important;
+    z-index: 2;
+}
+
+.graph{
+    width: 100%;
+    height: 100%;
+    max-height: 244px;
+    position: relative;
+    background: var(--bg-container);
+    padding: 0px 30px 20px;
+    border-radius: 14px;
+    border: var(--border-container);
+}
+
+.graph canvas{
+    width: 100% !important;
+}
+
+@media screen and (max-width: 1005px) {
+    main .forecast, main .graph{
+        max-width: 630px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .forecast .types{
+        align-self: center;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .splide__slide div:not(.bottom-text){
+        max-width: 120px;
+    }
+}
+
+@media screen and (max-width: 1260px) and (min-width: 1005px){
+    .graph{
+        padding: 0px 20px 20px;
+    }
+}
+
+@media screen and (max-width: 460px){
+    .graph{
+        padding: 0 20px 20px;
+    }
+}
+
+@media screen and (max-width: 350px){
+    .graph{
+        padding: 0 10px 10px;
+    }
+}
+
