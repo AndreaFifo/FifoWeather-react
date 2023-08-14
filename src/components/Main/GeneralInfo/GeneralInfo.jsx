@@ -3,6 +3,7 @@ import { MainContext } from "../../../App";
 import { useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { capitalizeString, weatherImg } from "../../../utils/weatherIcon";
+import { languages, weatherTranslate } from "../../../utils/dictionary";
 
 const GeneralInfo = () => {
     const {data, date, language, unit} = useContext(MainContext);
@@ -53,13 +54,14 @@ const GeneralInfo = () => {
                             initial={{x: -10, opacity: 0}}
                             animate={{x: 0, opacity: 1, transition: {ease: 'easeInOut', duration: 0.7, delay: 0.6}}}
                         >
-                            Today, {date.getDate() + ' ' + capitalizeString(date.toLocaleString(language, { month: 'short' }))}
+                            {languages[language.id].generalData.day} {date.getDate() + ' ' + capitalizeString(date.toLocaleString(language.id, { month: 'long' }))}
                         </motion.p>
                         <motion.p className="city"
                             initial={{x: -10, opacity: 0}}
                             animate={{x: 0, opacity: 1, transition: {ease: 'easeInOut', duration: 0.7, delay: 0.8}}}
                         >   
-                            {data.name}
+                            {data.city}
+                            <small>({data.region}, {data.country})</small>
                         </motion.p>
                     </div>
 
@@ -82,7 +84,7 @@ const GeneralInfo = () => {
                             initial={{opacity: 0, y: -10}}
                             animate={{opacity: 1, y: 0, transition: {ease: 'easeInOut', duration: 0.7, delay: 1.4}}}
                         >
-                            {data.data.current.weather[0].main}
+                            {weatherTranslate[language.id][data.data.current.weather[0].main]}
                         </motion.h2>
                         <motion.h3
                             initial={{opacity: 0, y: 10}}
@@ -101,17 +103,17 @@ const GeneralInfo = () => {
                     <motion.div className="wind" variants={variantListItem}>
                         <Wind size={22}/>
                         <h4>{data.data.current.wind_speed} {unit === 'C' ? 'm/s' : 'mph'}</h4>
-                        <p>Wind</p>
+                        <p>{languages[language.id].generalData.otherInfo['wind']}</p>
                     </motion.div>
                     <motion.div className="humidity" variants={variantListItem}>
                         <Droplet size={22}/>
                         <h4>{data.data.current.humidity}%</h4>
-                        <p>Humidity</p>
+                        <p>{languages[language.id].generalData.otherInfo['humidity']}</p>
                     </motion.div>
                     <motion.div className="pressure" variants={variantListItem}>
                         <CornerRightDown size={22}/>
                         <h4>{data.data.current.pressure} hPa</h4>
-                        <p>Pressure</p> 
+                        <p>{languages[language.id].generalData.otherInfo['pressure']}</p> 
                     </motion.div>
                 </motion.div>
             </motion.div>

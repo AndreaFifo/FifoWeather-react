@@ -5,12 +5,13 @@ import { useContext, useEffect, useState } from 'react';
 import { MainContext } from '../../../App';
 import { capitalizeString } from '../../../utils/weatherIcon';
 import { motion, AnimatePresence } from "framer-motion";
+import { labelsLang } from '../../../utils/dictionary';
 ChartJS.register(LineElement, ChartDataLabels, CategoryScale, LinearScale, PointElement, Filler);
 
 const Graph = () => {
     const {data, language, theme, firstAnimation: {setFirstAnimation}, forecastType: {forecastType}} = useContext(MainContext);
 
-    const [labels, setLabels] = useState(getLabels(forecastType));
+    const [labels, setLabels] = useState(getLabels(forecastType, language));
 
     const graphData = getData(forecastType, data);
 
@@ -91,7 +92,7 @@ const Graph = () => {
 
     useEffect(() => {
         function changeLabelsOnResize(){
-            setLabels(getLabels(forecastType));
+            setLabels(getLabels(forecastType, language));
         }
 
         window.addEventListener('resize', changeLabelsOnResize);
@@ -123,16 +124,16 @@ export default Graph
 function getLabels(forecastType, language){
     if(forecastType === 'today')
         if(window.innerWidth > 460)
-            return ['Night', 'Morning', 'Afternoon', 'Evening'];
+            return labelsLang[language.id].long;
         else
-            return ['Ngt', 'Mng', 'Aftr', 'Eve'];
+            return labelsLang[language.id].med;
     else{
         let date = new Date();
         date.setDate(date.getDate() + 1)
         let dates = [];
 
         for(let i = 0; i < 7; date.setDate(date.getDate() + 1), i++){
-            dates[i] = capitalizeString(date.toLocaleString(language, { weekday: window.innerWidth <= 350 ? 'narrow' : 'short' }));
+            dates[i] = capitalizeString(date.toLocaleString(language.id, { weekday: window.innerWidth <= 350 ? 'narrow' : 'short' }));
             if(window.innerWidth > 500)
                 dates[i] = dates[i] + ' ' + date.getDate();
         }

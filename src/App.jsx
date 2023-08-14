@@ -11,7 +11,16 @@ export const MainContext = createContext();
 
 //Custom hook
 const useStorageState = (localStorageKey, initialState, type) => {
-  const [value, setValue] = useState(type === 'var' ? localStorage.getItem(localStorageKey) : JSON.parse(localStorage.getItem(localStorageKey))  || initialState);
+  let storedValue = localStorage.getItem(localStorageKey);
+  let finalValue;
+  if(!storedValue){
+    localStorage.setItem(localStorageKey, type === 'var' ? initialState : JSON.stringify(initialState));
+    finalValue = initialState;
+  }
+  else
+    finalValue = type === 'var' ? storedValue : JSON.parse(storedValue);
+
+  const [value, setValue] = useState(finalValue);
   
   useEffect(() => {
     localStorage.setItem(localStorageKey, type === 'var' ? value : JSON.stringify(value));
@@ -24,7 +33,6 @@ const App = () => {
   const [theme, setTheme] = useStorageState('theme', 'light', 'var');
   const [language, setLanguage] = useStorageState('lang', {id: 'en', locale: 'en-US'}, 'object');
   const [unit, setUnit] = useStorageState('unit', 'C', 'var');
-  const searchTerm = useRef(null);
   const [forecastType, setForecastType] = useState('today');
   const [data, setData] = useState({});
   const [firstAnimation, setFirstAnimation] = useState(true);
@@ -32,11 +40,6 @@ const App = () => {
 
   //It does the same thing of window.onLoad
   useEffect(() => {
-    if(!localStorage.getItem('theme'))
-      localStorage.setItem('theme', 'light');
-  
-    if(!localStorage.getItem('lang'))
-      localStorage.setItem('lang', 'en');
   
     document.body.setAttribute('data-theme', localStorage.getItem('theme'));
   }, []);
@@ -64,8 +67,8 @@ const App = () => {
     setUnit(e.target.id);
   }
 
-  const searchDataHandle = async (city, firstAnim, unitLang) => {
-    const dt = await fetchData({city, unit, language, data, unitLang});
+  const searchDataHandle = async (city, firstAnim, unitLang, latitude=null, longitude=null, countryCode=null, region=null) => {
+    const dt = await fetchData({city, unit, language, data, unitLang, latitude, longitude, countryCode, region});
     setData(dt);
 
     if(!unitLang){
@@ -76,16 +79,14 @@ const App = () => {
   }
 
   useEffect(() => {
-    if(searchTerm.current.value === "" && Object.keys(data).length === 0)
+    if(Object.keys(data).length === 0)
       return;
-    else if(searchTerm.current.value === "" && Object.keys(data).length !== 0){
-      searchDataHandle(document.querySelector('.city').innerText, false, true);
+    else if(Object.keys(data).length !== 0){
+      searchDataHandle(document.querySelector('.general-info .city').innerText, false, true);
       return;
     }
-    
-    searchDataHandle(document.querySelector('.city').innerText, false, true);
   }, [unit, language])
-
+  
   return (
     <>
       <GlobalContext.Provider 
@@ -94,7 +95,6 @@ const App = () => {
             theme: {theme, themeHandle}, 
             language: {language, languageHandle},
             unit: {unit, unitHandle},
-            searchTerm,
             searchDataHandle
           }
         }
@@ -102,8 +102,7 @@ const App = () => {
         <Navbar />
       </GlobalContext.Provider>
 
-      {/* key={mainKey} serve per far ri-renderizzare il main ad ogni ricerca */}
-      <MainContext.Provider value={{ data, date, theme, language: language.locale, unit, forecastType: {forecastType, setForecastType}, firstAnimation: {firstAnimation, setFirstAnimation}}}>
+      <MainContext.Provider value={{ data, date, theme, language, unit, forecastType: {forecastType, setForecastType}, firstAnimation: {firstAnimation, setFirstAnimation}}}>
         {Object.keys(data).length !== 0 && (<Main/>)}
       </MainContext.Provider>
     </>

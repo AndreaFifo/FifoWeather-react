@@ -1,8 +1,9 @@
 import { capitalizeString, weatherImg } from '../../../utils/weatherIcon';
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { MainContext } from '../../../App';
 import { motion, AnimatePresence } from "framer-motion";
 import { Splide, SplideSlide } from '@splidejs/react-splide';
+import { languages, weatherTranslate } from '../../../utils/dictionary';
 import '@splidejs/react-splide/css';
 
 const Forecast = () => {
@@ -11,12 +12,12 @@ const Forecast = () => {
   const {data, date, unit, language, firstAnimation: {firstAnimation}, forecastType: {forecastType, setForecastType}} = useContext(MainContext);
   const arrayData = forecastType === 'today' ? Object.entries(data.data.hourly) : Object.entries(data.data.daily);
 
+  let forecastDate = new Date();
+
   useEffect(() => {
     splide.current.go(0);
   }, [forecastType]);
   
-  
-  let forecastDate = new Date();
   return (
     <AnimatePresence>
       <motion.div className="forecast" key={data.id}
@@ -24,11 +25,20 @@ const Forecast = () => {
       >
         <motion.div className="types"
           initial={{opacity: 0}}
-          animate={{opacity: 1, transition: {ease: 'easeInOut', duration: 0.5, delay: 5.2}}}
+          animate={{opacity: 1, transition: {ease: 'easeInOut', duration: 0.5, delay: firstAnimation ? 5.2 : 0}}}
         >
-          <p className={forecastType === 'today' ? 'type selected' : 'type'} onClick={() => {forecastType !== 'today' ? setForecastType('today') : ''}}>Today</p>
-          <p className={forecastType === 'week' ? 'type selected' : 'type'} onClick={() => {forecastType !== 'week' ? setForecastType('week') : ''}}>Week</p>
-          <div className="line" style={{transform: forecastType === 'today' ? 'translate(calc(-100% + 10px), 12px)' : 'translate(calc(100% - 10px), 12px)'}}></div>
+          <p className={forecastType === 'today' ? 'type selected' : 'type'} onClick={(e) => {forecastType !== 'today' ? setForecastType('today') : ''; /*setWidthLine(e.target.offsetWidth);*/}}>
+            {languages[language.id].forecast['Today']}
+          </p>
+          <p className={forecastType === 'week' ? 'type selected' : 'type'} onClick={(e) => {forecastType !== 'week' ? setForecastType('week') : ''; /*setWidthLine(e.target.offsetWidth);*/}}>
+            {languages[language.id].forecast['Week']}
+          </p>
+          <div className="line" style={{
+            width: forecastType === 'today' ? document.querySelectorAll('.type')[0]?.offsetWidth : document.querySelectorAll('.type')[1]?.offsetWidth, 
+            left: forecastType === 'today' ? 0 : `calc(100% - ${document.querySelectorAll('.type')[1]?.offsetWidth}px)`,
+            bottom: -7
+            }}> 
+          </div>
         </motion.div>
 
         <Splide ref={(slider) => (splide.current = slider)}
@@ -66,7 +76,7 @@ const Forecast = () => {
               if(i <= (23 - date.getHours()) && forecastType === 'today')
                 return(
                   <SplideSlide key={i}>
-                    <DivForecast data={e} date={date} index={i} unit={unit} forecastType={forecastType} lang={null} firstAnimation={firstAnimation}/>
+                    <DivForecast data={e} date={date} index={i} unit={unit} forecastType={forecastType} lang={language} firstAnimation={firstAnimation}/>
                   </SplideSlide>
                 );
               else if(i < 6 && forecastType === 'week'){
@@ -97,13 +107,13 @@ const DivForecast = ({data, date, index, unit, forecastType, lang, firstAnimatio
       animate={{y: 0, opacity: 1, transition: {duration: 0.5, ease: 'easeInOut', delay: (0.3 * index) + (firstAnimation ? 3.8 : 0)}}}
     >
       {forecastType === 'today' && (<p className="hour">{date.getHours() + index}:00</p>)}
-      {forecastType === 'week' && (<p className="hour">{capitalizeString(date.toLocaleString(lang, { weekday: window.innerWidth <= 350 ? 'narrow' : 'short' })) + ' ' + date.getDate()}</p>)}
+      {forecastType === 'week' && (<p className="hour">{capitalizeString(date.toLocaleString(lang.id, { weekday: window.innerWidth <= 350 ? 'narrow' : 'short' })) + ' ' + date.getDate()}</p>)}
 
       <img src={weatherImg(data[1].weather[0].icon, forecastType === 'day' ? date.getHours() : 7)} alt="icon" loading='lazy'/>
 
       <div className="bottom-text">
         <h2 className="temp">{Math.round(typeof data[1].temp === 'number' ? data[1].temp : avgArray(Object.values(data[1].temp))) + '°' +unit}</h2> 
-        <h3 className="weather">{data[1].weather[0].main}</h3>
+        <h3 className="weather">{weatherTranslate[lang.id][data[1].weather[0].main]}</h3>
       </div>
     </motion.div>
   )

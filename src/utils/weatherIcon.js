@@ -1,34 +1,47 @@
+import {
+    brokenCloudy,
+    clearSun,
+    moon,
+    nightLilCloudy,
+    nightMidCloudy,
+    nightRain,
+    rain,
+    sunLilCloudy,
+    sunMidCloudy,
+    sunRain,
+    thunder
+} from '../assets/index';
+
 const weatherIcon = {
     '04': {
-        d: 'broken-cloudy.png',
-        n: 'broken-cloudy.png',
+        d: brokenCloudy,
+        n: brokenCloudy,
     },
     '03': {
-        d: 'sun-mid-cloudy.png',
-        n: 'night-mid-cloudy.png',
+        d: sunMidCloudy,
+        n: nightMidCloudy,
     },
     '02': {
-        d: 'sun-lil-cloudy.png',
-        n: 'night-lil-cloudy.png',
+        d: sunLilCloudy,
+        n: nightLilCloudy,
     },
     '01': {
-        d: 'clear-sun.png',
-        n: 'moon.png',
+        d: clearSun,
+        n: moon,
     },
     '09': {
-        d: 'rain.png'
+        d: rain
     },
     '10': {
-        d: 'sun-rain.png',
-        n: 'night-rain.png',
+        d: sunRain,
+        n: nightRain,
     },
     '11': {
-        d: 'thunder.png',
+        d: thunder,
     }
 }
 
 export const weatherImg = (icon, time) => {
-    const path = 'src/assets/weather/';
     const number = icon.slice(0, 2);
     let letter = '';
 
@@ -38,7 +51,7 @@ export const weatherImg = (icon, time) => {
     else
         letter = icon.slice(-1);
 
-    return path + weatherIcon[number][letter];
+    return weatherIcon[number][letter];
 }
 
 export const capitalizeString = (string) => string[0].toUpperCase() + string.slice(1);

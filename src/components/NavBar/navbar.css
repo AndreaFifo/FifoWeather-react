@@ -84,13 +84,14 @@ nav .search-input{
 
     display: flex;
     flex-direction: column;
+    box-shadow: var(--box-shadow);
 
     overflow-y: scroll;
 
     transition: height 0.5s ease-in-out;
 }
 
-input:focus ~ .dropdown-search, .dropdown-search.open:hover{
+input:focus ~ .dropdown-search, .dropdown-search.open:hover, .dropdown-search:focus-visible{
     height: 200px;
 }
 
@@ -158,6 +159,32 @@ input:focus ~ .dropdown-search, .dropdown-search.open:hover{
 
 .dropdown-search::-webkit-scrollbar-thumb:active {
     background-color: #62A34B;
+}
+
+.dropdown-search .loader-container{
+    width: 100%;
+    height: 300px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+}
+
+.loader{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: 
+    radial-gradient(farthest-side,#2D4059 94%,#0000) top/4px 4px no-repeat,
+    conic-gradient(#0000 30%,#2D4059);
+    -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 4px),#000 0);
+    animation:s3 1s infinite linear;
+}
+
+@keyframes s3{ 
+    100%{transform: rotate(1turn)}
 }
 
 .dropdown-search .city{
@@ -333,7 +360,7 @@ input:focus ~ .dropdown-search, .dropdown-search.open:hover{
     left: 50%;
     transform: translateX(-50%);
 
-    background: var(--bg-container);
+    background: var(--language-dropdown);
     border: none;
     border-radius: 16px;
 
@@ -342,6 +369,8 @@ input:focus ~ .dropdown-search, .dropdown-search.open:hover{
     padding: 0;
 
     transition: height 0.5s ease-in-out;
+
+    box-shadow: var(--box-shadow);
 }
 
 .language-part .language:hover ~ .language-dropdown,
