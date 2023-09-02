@@ -5,7 +5,12 @@ export const languages = {
             'Italian',
             'Spanish',
         ],
-        placeholder: "Search a city...",
+        placeholder: {
+            input: "Search a city...",
+            suggestedCities: "Suggested cities:",
+            latestSearches: "Latest searches:",
+            clear: "Clear all"
+        },
         generalData: {
             day: 'Today, ',
             otherInfo: {
@@ -18,6 +23,10 @@ export const languages = {
             Today: 'Today',
             Week: 'Week'
         },
+        graph: {
+            today: "Today's chart",
+            week: "Week's chart"
+        }
     },
 
     it: {
@@ -26,7 +35,12 @@ export const languages = {
             'Italiano',
             'Spagnolo',
         ],
-        placeholder: "Cerca una città...",
+        placeholder: {
+            input: "Cerca una città...",
+            suggestedCities: "Città suggerite:",
+            latestSearches: "Ultime ricerche:",
+            clear: "Rimuovi tutto"
+        },
         generalData: {
             day: 'Oggi, ',
             otherInfo: {
@@ -39,6 +53,10 @@ export const languages = {
             Today: 'Oggi',
             Week: 'Settimana'
         },
+        graph: {
+            today: "Grafico di oggi",
+            week: "Grafico della settimana"
+        }
     },
 
     sp: {
@@ -47,7 +65,12 @@ export const languages = {
             'Italiano',
             'Español',
         ],
-        placeholder: "Buscar una ciudad...",
+        placeholder: {
+            input: "Buscar una ciudad...",
+            suggestedCities: "Ciudades sugeridas:",
+            latestSearches: "Ultimas búsquedas:",
+            clear: "Limpiar todo"
+        },
         generalData: {
             day: 'Este dia, ',
             otherInfo: {
@@ -60,6 +83,10 @@ export const languages = {
             Today: 'Hoy',
             Week: 'Semana'
         },
+        graph: {
+            today: "Gráfico de hoy",
+            week: "Gráfico de la semana"
+        }
     }
 }
 

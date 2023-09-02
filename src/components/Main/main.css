@@ -7,12 +7,24 @@ main{
         "generalInfo forecast"
         "generalInfo graph";
 
-    min-height: 100vh;
+    max-height: 740px;
+
+    overflow-y: hidden;
+}
+
+@media screen and (max-width: 1450px){
+    main{
+        grid-auto-columns: 0.65fr 1fr;
+    }
 }
 
 @media screen and (max-width: 1260px) {
-    main{
-        grid-auto-columns: 0.75fr 1fr;
+    div#root{
+        padding: 20px 6%;
+    }
+
+    .general-info img{
+        width: 150px !important;
     }
 }
 
@@ -59,19 +71,20 @@ main .general-info{
 
 }
 
-.header .city-date p.city{
-    font-size: clamp(1.5rem, 0.9167rem + 3.3333vw, 1.75rem);
+.header .city-date .city p{
+    font-size: clamp(1.5rem, 1.3491rem + 0.8621vw, 2.125rem);
 
     text-transform: capitalize;
 }
 
 .header .city-date .city small{
-    font-size: initial;
+    font-size: clamp(0.8125rem, 0.7371rem + 0.431vw, 1.125rem);
     color: var(--secondary);
+    font-family: 'Lexend-Medium';
 }
 
 .header .temp{
-    font-size: clamp(1.75rem, 1.1667rem + 3.3333vw, 2rem);
+    font-size: clamp(1.5rem, 1.2586rem + 1.3793vw, 2.5rem);
 }
 
 .general-info .weather, .weather .text, .other-info div{
@@ -82,13 +95,13 @@ main .general-info{
 }
 
 .weather .text h2{
-    font-size: clamp(2.125rem, 1.9792rem + 0.8333vw, 2.5rem);
+    font-size: clamp(2.125rem, 1.9741rem + 0.8621vw, 2.75rem);
     color: var(--primary);
     font-family: 'Lexend-SemiBold';
 }
 
 .weather .text h3{
-    font-size: clamp(1.5rem, 1.3542rem + 0.8333vw, 1.875rem);
+    font-size: clamp(1.5rem, 1.2888rem + 1.2069vw, 2.375rem);
     color: var(--secondary);
     text-transform: capitalize;
 }
@@ -152,6 +165,8 @@ main .general-info{
             "forecast"
             "graph";
         row-gap: 40px;
+
+        max-height: max-content;
     }
 
     main .general-info{
@@ -250,8 +265,10 @@ main .general-info{
     justify-content: center;
 }
 
-.splide__slide div:not(.bottom-text){
+.splide__slide .forecast-div{
     width: 100%;
+    max-width: 143px;
+    min-height: 210px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -333,9 +350,45 @@ main .general-info{
     max-height: 244px;
     position: relative;
     background: var(--bg-container);
-    padding: 0px 30px 20px;
+    padding: 20px 30px;
     border-radius: 14px;
     border: var(--border-container);
+}
+
+.graph p{
+    color: var(--primary);
+    font-family: 'Lexend-Medium';
+    font-size: 18px;
+
+    position: relative;
+
+    width: max-content;
+}
+
+.graph p::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -7px;
+
+    width: 0;
+    height: 2px;
+
+    border-radius: 16px;
+
+    background: var(--primary);
+
+    animation: expandWidth 0.5s ease-in-out 0.6s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes expandWidth {
+    from {
+        width: 0;
+    }
+    to {
+        width: 60%;
+    }
 }
 
 .graph canvas{
@@ -343,6 +396,10 @@ main .general-info{
 }
 
 @media screen and (max-width: 1005px) {
+    div#root{
+        padding: 20px 8%;
+    }
+    
     main .forecast, main .graph{
         max-width: 630px;
     }
@@ -358,29 +415,291 @@ main .general-info{
     }
 }
 
-@media screen and (max-width: 400px) {
-    .splide__slide div:not(.bottom-text){
+@media screen and (max-width: 450px) {
+    .splide__slide .forecast-div{
         max-width: 120px;
+    }
+
+    .graph{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        padding: 20px 10px;
+    }
+
+    .graph p::after{
+        left: 50%;
+        transform: translateX(-50%);
     }
 }
 
-@media screen and (max-width: 1260px) and (min-width: 1005px){
+/* @media screen and (max-width: 1260px) and (min-width: 1005px){
     .graph{
         height: 250px;
         padding: 0px 20px 20px;
     }
-}
-
-@media screen and (max-width: 460px){
-    .graph{
-        height: 175px;
-        padding: 0 20px 20px;
-    }
-}
+} */
 
 @media screen and (max-width: 350px){
     .graph{
-        padding: 0 10px 10px;
+        padding: 20px 0;
     }
 }
 
+@media screen and (min-height: 750px) and (min-width: 1005px) {
+    /* fai tuttti i fontsize del diopo a partire da 700 a 1440 procodoi */
+    
+    main{
+        height: calc(100vh - 135px);
+        gap: 80px;
+    }
+
+    .general-info{
+        max-width: 100% !important;
+
+        padding: 30px 30px;
+    }
+
+    .general-info .weather img{
+        width: 175px;
+    }
+
+    .general-info .other-info{
+        height: 150px;
+    }
+
+    .general-info .other-info div{
+        gap: 7px;
+    }
+
+    .general-info .other-info svg{
+        width: 28px;
+        height: 28px;
+    }
+
+    .general-info .other-info h4{
+        font-size: clamp(1rem, 0.3571rem + 0.7143vw, 1.25rem);
+    }
+
+    .general-info .other-info p{
+        font-size: clamp(0.875rem, 0.2321rem + 0.7143vw, 1.125rem);
+    }
+
+    .header .city-date .day{
+        font-family: 'Lexend-Medium';
+        color: var(--secondary);
+        font-size: clamp(0.75rem, 0.1667rem + 3.3333vw, 1rem);
+    }
+    
+    .header .city-date .city p{
+        font-size: clamp(1.875rem, 1.3674rem + 0.8081vw, 2.125rem);
+    }
+    
+    .header .city-date .city small{
+        font-size: clamp(0.8125rem, 0.7371rem + 0.431vw, 1.125rem);
+    }
+    
+    .header .temp{
+        font-size: clamp(2.125rem, 1.3636rem + 1.2121vw, 2.5rem);
+    }
+    
+    .weather .text h2{
+        font-size: clamp(2.375rem, 1.6136rem + 1.2121vw, 2.75rem);
+    }
+    
+    .weather .text h3{
+        font-size: clamp(1.875rem, 1.3674rem + 0.8081vw, 2.125rem);
+    }
+    
+    .other-info div h4{
+        font-size: clamp(0.8125rem, 0.4087rem + 2.3077vw, 1rem);
+    }
+    
+    .other-info div p{
+        font-size: clamp(0.75rem, 0.4808rem + 1.5385vw, 0.875rem);
+    }
+
+    .forecast{
+        gap: 25px;
+    }
+
+    .splide {
+        height: calc(100%);
+        max-height: 265px;
+    }
+
+    .splide__track {
+        height: calc(100%);
+        max-height: 265px;
+    }
+
+    .splide__slide .forecast-div{
+        height: 100% !important;
+        justify-content: space-evenly;
+        gap: 0;
+
+        padding: 10px;
+    }
+    
+    .splide__slide img{
+        width: 90px;
+        height: 90px;
+    }
+
+    .splide__slide .hour{
+        font-size: 18px;
+    }
+    
+    .splide__slide .temp{
+        font-size: 26px;
+    }
+    
+    .splide__slide .weather{
+        font-size: 24px;
+    }
+
+    .graph{
+        align-self: end;
+        max-height: 300px;
+    }
+}
+
+@media screen and (max-height: 800px){
+    .graph{
+        max-height: 250px;
+    }
+}
+
+@media screen and (min-width: 1881px) {
+    .graph{
+        max-height: 330px;
+    }
+}
+
+@media screen and (max-width: 1150px) and (min-width: 1005px) {
+    main{
+        gap: 50px
+    }
+}
+
+.skeleton{
+    background: linear-gradient(90deg, var(--skeleton-animation) 0%, var(--skeleton-animation-shade) 50%, var(--skeleton-animation) 100%);
+    background-size: 200% 100%;
+    
+    border-radius: 4px;
+    animation: skeletonLoading 2.5s infinite;
+}
+
+.skeleton-loading .city-date{
+    width: 100%;
+    min-width: 117px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.skeleton-loading .city-date .skeleton:nth-child(odd){
+    width: 50%;
+    height: 20px;
+}
+
+.skeleton-loading .city-date .skeleton:nth-child(even){
+    width: 70%;
+    height: 38px;
+}
+
+.skeleton-loading .header > .skeleton{
+    width: 70px;
+    height: 55px;
+}
+
+.skeleton-loading .weather{
+    gap: 25px;
+}
+
+.skeleton-loading .weather > .skeleton{
+    width: 40%;
+    min-width: 100px;
+    max-width: 115px;
+    height: 100px;
+}
+
+.skeleton-loading .text{
+    width: 100%;
+    gap: 15px;
+}
+
+.skeleton-loading .text .skeleton:first-child{
+    width: calc(60% + 20px);
+    max-width: 200px;
+    height: 40px;
+}
+
+.skeleton-loading .text .skeleton:last-child{
+    width: calc(80% + 20px);
+    max-width: 250px;
+    height: 30px;
+}
+
+.skeleton-loading .other-info .skeleton{
+    background: linear-gradient(90deg, var(--skeleton-animation-other-info) 0%, var(--skeleton-animation-other-info-shade) 50%, var(--skeleton-animation-other-info) 100%);;
+    background-size: 200% 100%;
+
+    width: calc(33% - 10px);
+    height: 70px;
+}
+
+.skeleton-forecast{
+    justify-content: space-evenly;
+}
+
+.skeleton-forecast > .skeleton:first-child{
+    width: 40px;
+    height: 20px;
+} 
+
+.skeleton-forecast .skeleton.img{
+    width: 60px;
+    height: 50px;
+}
+
+.skeleton-forecast .bottom-text{
+    width: 100%;
+
+    gap: 10px;
+}
+
+.skeleton-forecast .bottom-text .skeleton:first-child{
+    width: 70%;
+    height: 25px;
+}
+
+.skeleton-forecast .bottom-text .skeleton:last-child{
+    width: 50%;
+    height: 20px;
+}
+
+.graph.skeleton{
+    height: calc(100% - 7px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.graph.skeleton svg{
+    opacity: 0.4;
+
+    color: var(--primary);
+}
+
+@keyframes skeletonLoading{
+    0%{
+        background-position: 100% 0;
+    }
+    100%{
+        background-position: -100% 0;
+    }
+}

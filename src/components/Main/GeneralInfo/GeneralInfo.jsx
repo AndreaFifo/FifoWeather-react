@@ -1,12 +1,15 @@
-import { Wind, Droplet, CornerRightDown, Key } from "react-feather";
+import { Wind, Droplet, CornerRightDown} from "react-feather";
 import { MainContext } from "../../../App";
 import { useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { capitalizeString, weatherImg } from "../../../utils/weatherIcon";
 import { languages, weatherTranslate } from "../../../utils/dictionary";
+import { changeTimeZone } from "../../../utils/fetchData";
 
-const GeneralInfo = () => {
-    const {data, date, language, unit} = useContext(MainContext);
+export const GeneralInfo = () => {
+    const {data, language, unit} = useContext(MainContext);
+
+    let date = changeTimeZone(new Date(), data.data.timezone);
 
     const variantList = {
         hidden: {
@@ -42,11 +45,11 @@ const GeneralInfo = () => {
     }
 
     return (
-        <AnimatePresence>
+        <AnimatePresence mode="wait">
             <motion.div className="general-info" key={data.id}
                 initial={{x: -40, opacity: 0}}
-                animate={{x: 0, opacity: 1, transition: {ease: 'easeInOut', duration: 0.8, delay: 0.3}}}
-                exit={{x: -40, opacity: 0, transition: {ease: 'easeInOut', duration: 0.5}}}
+                animate={{x: 0, opacity: 1, transition: {ease: 'easeInOut', duration: 0.8}}}
+                exit={{x: -40, opacity: 0, transition: {ease: 'easeInOut', duration: 0.7}}}
             >
                 <div className="header">
                     <div className="city-date">
@@ -56,13 +59,13 @@ const GeneralInfo = () => {
                         >
                             {languages[language.id].generalData.day} {date.getDate() + ' ' + capitalizeString(date.toLocaleString(language.id, { month: 'long' }))}
                         </motion.p>
-                        <motion.p className="city"
+                        <motion.div className="city"
                             initial={{x: -10, opacity: 0}}
                             animate={{x: 0, opacity: 1, transition: {ease: 'easeInOut', duration: 0.7, delay: 0.8}}}
                         >   
-                            {data.city}
+                            <p>{data.city}</p>
                             <small>({data.region}, {data.country})</small>
-                        </motion.p>
+                        </motion.div>
                     </div>
 
                     <motion.p className="temp"

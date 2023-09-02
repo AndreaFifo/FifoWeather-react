@@ -5,23 +5,24 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { languages, weatherTranslate } from '../../../utils/dictionary';
 import '@splidejs/react-splide/css';
+import { changeTimeZone } from '../../../utils/fetchData';
 
 const Forecast = () => {
   const splide = useRef();
 
-  const {data, date, unit, language, firstAnimation: {firstAnimation}, forecastType: {forecastType, setForecastType}} = useContext(MainContext);
+  const {data, unit, language, firstAnimation: {firstAnimation}, forecastType: {forecastType, setForecastType}} = useContext(MainContext);
   const arrayData = forecastType === 'today' ? Object.entries(data.data.hourly) : Object.entries(data.data.daily);
 
-  let forecastDate = new Date();
+  let date = changeTimeZone(new Date(), data.data.timezone);
 
   useEffect(() => {
     splide.current.go(0);
   }, [forecastType]);
   
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       <motion.div className="forecast" key={data.id}
-        exit={{x: 40, opacity: 0, transition: {ease: 'easeInOut', duration: 0.5}}}
+        exit={{x: 40, opacity: 0, transition: {ease: 'easeInOut', duration: 0.7}}}
       >
         <motion.div className="types"
           initial={{opacity: 0}}
@@ -33,12 +34,15 @@ const Forecast = () => {
           <p className={forecastType === 'week' ? 'type selected' : 'type'} onClick={(e) => {forecastType !== 'week' ? setForecastType('week') : ''; /*setWidthLine(e.target.offsetWidth);*/}}>
             {languages[language.id].forecast['Week']}
           </p>
-          <div className="line" style={{
-            width: forecastType === 'today' ? document.querySelectorAll('.type')[0]?.offsetWidth : document.querySelectorAll('.type')[1]?.offsetWidth, 
-            left: forecastType === 'today' ? 0 : `calc(100% - ${document.querySelectorAll('.type')[1]?.offsetWidth}px)`,
-            bottom: -7
-            }}> 
-          </div>
+          <motion.div className="line" 
+            style={{
+              width: forecastType === 'today' ? document.querySelectorAll('.type')[0]?.offsetWidth : document.querySelectorAll('.type')[1]?.offsetWidth, 
+              left: forecastType === 'today' ? 0 : `calc(100% - ${document.querySelectorAll('.type')[1]?.offsetWidth}px)`,
+              bottom: -7
+            }}
+            initial={{x: -10, opacity: 0}}
+            animate={{x: 0, opacity: 1, transition: {ease: 'easeIn', duration: 0.3, delay: 5.5}}}
+          ></motion.div>
         </motion.div>
 
         <Splide ref={(slider) => (splide.current = slider)}
@@ -50,43 +54,48 @@ const Forecast = () => {
             perMove: 1,
             focus: 'right',
             breakpoints: {
-              400: {
+              450: {
                 perPage: 2,
                 perMove: 2,
               },
-              550: {
+              630: {
                 perPage: 3,
                 perMove: 3,
               },
-              700: {
+              1005: {
                 perPage: 4,
                 perMove: 4,
               },
-              1260: {
+              1150: {
+                perPage: 3,
+                perMove: 3,
+              },
+              1450: {
                 perPage: 4,
                 perMove: 4,
               },
-              2000: {
+              3000: {
                 perPage: 5,
                 perMove: 5,
               },
             }
           }}>
-            {arrayData.map((e, i) => {
-              if(i <= (23 - date.getHours()) && forecastType === 'today')
-                return(
-                  <SplideSlide key={i}>
-                    <DivForecast data={e} date={date} index={i} unit={unit} forecastType={forecastType} lang={language} firstAnimation={firstAnimation}/>
-                  </SplideSlide>
-                );
-              else if(i < 6 && forecastType === 'week'){
-                return(
-                  <SplideSlide key={i}>
-                    <DivForecast data={e} date={forecastDate} index={i} unit={unit} forecastType={forecastType} lang={language} firstAnimation={firstAnimation}/>
-                  </SplideSlide>
-                );
-              }
-            })}
+            {
+              arrayData.map((e, i) => {
+                if(i <= (23 - date.getHours()) && forecastType === 'today')
+                  return(
+                    <SplideSlide key={i}>
+                      <DivForecast data={e} date={date} index={i} unit={unit} forecastType={forecastType} lang={language} firstAnimation={firstAnimation}/>
+                    </SplideSlide>
+                  );
+                else if(i < 6 && forecastType === 'week'){
+                  return(
+                    <SplideSlide key={i}>
+                      <DivForecast data={e} date={date} index={i} unit={unit} forecastType={forecastType} lang={language} firstAnimation={firstAnimation}/>
+                    </SplideSlide>
+                  );
+              }})
+            }
         </Splide>
       </motion.div>
     </AnimatePresence>
@@ -101,13 +110,13 @@ const DivForecast = ({data, date, index, unit, forecastType, lang, firstAnimatio
   }
 
   return(
-    <motion.div
+    <motion.div className="forecast-div"
       key={forecastType}
       initial={{y: -20, opacity: 0}}
       animate={{y: 0, opacity: 1, transition: {duration: 0.5, ease: 'easeInOut', delay: (0.3 * index) + (firstAnimation ? 3.8 : 0)}}}
     >
       {forecastType === 'today' && (<p className="hour">{date.getHours() + index}:00</p>)}
-      {forecastType === 'week' && (<p className="hour">{capitalizeString(date.toLocaleString(lang.id, { weekday: window.innerWidth <= 350 ? 'narrow' : 'short' })) + ' ' + date.getDate()}</p>)}
+      {forecastType === 'week' && (<p className="hour">{capitalizeString(date.toLocaleString(lang.id, { weekday: 'short'})) + ' ' + date.getDate()}</p>)}
 
       <img src={weatherImg(data[1].weather[0].icon, forecastType === 'day' ? date.getHours() : 7)} alt="icon" loading='lazy'/>
 

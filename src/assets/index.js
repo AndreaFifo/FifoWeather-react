@@ -29,5 +29,5 @@ export {
     thunder,
     italy,
     spain,
-    uk
+    uk,
 };

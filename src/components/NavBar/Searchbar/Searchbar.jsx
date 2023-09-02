@@ -20,15 +20,24 @@ const Searchbar = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [isInitialized, setIsInitialized] = useState(false);
+    const [abortController, setAbortController] = useState(new AbortController());
 
     async function getCities(searchTerm){
         setIsLoading(true);
         if(searchTerm === '') 
             return;
     
-        const citiesList = await fetchCities(searchTerm);
-        setCities(citiesList);
-        setIsLoading(false);
+        abortController.abort();
+        setAbortController(new AbortController());
+
+        try{
+            const citiesList = await fetchCities(searchTerm);
+            setCities(citiesList);
+            setIsLoading(false);
+        }
+        catch(error){
+            console.log(error);
+        }
     }
 
     useEffect(() => {
@@ -63,7 +72,7 @@ const Searchbar = () => {
             <X size={22} className='btn del' onClick={() => {setSearchTerm('')}}/>
             
             <input 
-                type="text" name="search" id="search" placeholder={languages[language.id].placeholder} autoComplete="off"
+                type="text" name="search" id="search" placeholder={languages[language.id].placeholder.input} autoComplete="off"
                 value={searchTerm}
                 onFocus={() => document.querySelector('.dropdown-search').classList.add('open')} 
                 onChange={(e) => {setSearchTerm(e.target.value)}}
@@ -71,11 +80,11 @@ const Searchbar = () => {
 
             <div className="dropdown-search">
                 <div className="headers">
-                    <small>{searchTerm === '' ? 'Latest searches:' : 'Suggested cities:'}</small>
+                    <small>{searchTerm === '' ? languages[language.id].placeholder.latestSearches : languages[language.id].placeholder.suggestedCities}</small>
 
                     {!searchTerm && (<small onClick={(e) => {localStorage.setItem('chronology', JSON.stringify([])); setCities([]);}}>
                         <Trash2 size={16} className="trash"></Trash2>
-                        Clear all
+                        {languages[language.id].placeholder.clear}
                     </small>)}
                     
                 </div>

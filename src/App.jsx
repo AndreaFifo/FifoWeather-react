@@ -1,9 +1,8 @@
 import Navbar from './components/NavBar/Navbar';
 import Main from './components/Main/Main';
 import { fetchData } from './utils/fetchData';
-import { useState, useEffect, createContext, useRef } from 'react';
+import { useState, useEffect, createContext} from 'react';
 import './App.css';
-import { delay } from 'framer-motion';
 
 //Creation of context to manage states globally
 export const GlobalContext = createContext();
@@ -36,8 +35,7 @@ const App = () => {
   const [forecastType, setForecastType] = useState('today');
   const [data, setData] = useState({});
   const [firstAnimation, setFirstAnimation] = useState(true);
-  let date = new Date();
-
+  const [loading, setLoading] = useState(true);
   //It does the same thing of window.onLoad
   useEffect(() => {
   
@@ -73,16 +71,16 @@ const App = () => {
 
     if(!unitLang){
       setFirstAnimation(firstAnim);
-      //setTimeout(setMainKey(prevKey => prevKey + 1), 3000);
       setForecastType('today');
     }
+
   }
 
   useEffect(() => {
     if(Object.keys(data).length === 0)
       return;
     else if(Object.keys(data).length !== 0){
-      searchDataHandle(document.querySelector('.general-info .city').innerText, false, true);
+      searchDataHandle(data.city, false, true, data.lat, data.lon, data.country, data.region);
       return;
     }
   }, [unit, language])
@@ -102,7 +100,7 @@ const App = () => {
         <Navbar />
       </GlobalContext.Provider>
 
-      <MainContext.Provider value={{ data, date, theme, language, unit, forecastType: {forecastType, setForecastType}, firstAnimation: {firstAnimation, setFirstAnimation}}}>
+      <MainContext.Provider value={{ data, theme, language, unit, forecastType: {forecastType, setForecastType}, firstAnimation: {firstAnimation, setFirstAnimation}}}>
         {Object.keys(data).length !== 0 && (<Main/>)}
       </MainContext.Provider>
     </>

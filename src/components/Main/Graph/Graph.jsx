@@ -4,12 +4,14 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { useContext, useEffect, useState } from 'react';
 import { MainContext } from '../../../App';
 import { capitalizeString } from '../../../utils/weatherIcon';
+import { languages } from '../../../utils/dictionary';
 import { motion, AnimatePresence } from "framer-motion";
 import { labelsLang } from '../../../utils/dictionary';
+import { changeTimeZone } from '../../../utils/fetchData';
 ChartJS.register(LineElement, ChartDataLabels, CategoryScale, LinearScale, PointElement, Filler);
 
 const Graph = () => {
-    const {data, language, theme, firstAnimation: {setFirstAnimation}, forecastType: {forecastType}} = useContext(MainContext);
+    const {data, language, theme, firstAnimation: {firstAnimation, setFirstAnimation}, forecastType: {forecastType}} = useContext(MainContext);
 
     const [labels, setLabels] = useState(getLabels(forecastType, language));
 
@@ -20,6 +22,13 @@ const Graph = () => {
         radius: 3,
         responsive: true,
         maintainAspectRatio: false,
+        layout: {
+            padding: {
+                bottom: 20,
+                left: 30,
+                right: 30
+            }
+        },
         scales: {
             x: {
                 border: {
@@ -69,7 +78,7 @@ const Graph = () => {
     }
 
     const dataGraph = {
-        labels: getLabels(forecastType, language),
+        labels: getLabels(forecastType, language, data.data.timezone),
         datasets: [{
             data: graphData,
             fill: 'start',
@@ -103,16 +112,21 @@ const Graph = () => {
     }, [])
 
     return (
-        <AnimatePresence>
+        <AnimatePresence mode="wait">
             <motion.div className="graph" key={data.id}
                 initial={{y: 40, opacity: 0}}
                 animate={{y: 0, opacity: 1, transition: {ease:'easeInOut', duration: 0.8, delay: 5.7}}}
-                onAnimationComplete={() => {
-                    setFirstAnimation(false)
-                }}
-                exit={{y: 40, opacity: 0, transition: {ease:'easeInOut', duration: 0.5,}}}
+                exit={{y: 40, opacity: 0, transition: {ease:'easeInOut', duration: 0.7}}}
             >
-                {/* <p>{forecastType === 'today' ? 'Today' : 'Week'}</p> */}
+                <motion.p key={forecastType}
+                    initial={{x: -10, opacity: 0}}
+                    animate={{x: 0, opacity: 1, transition: {ease:'easeInOut', duration: 0.8, delay: firstAnimation ? 6.2 : 0}}}
+                    onAnimationComplete={() => {
+                        setFirstAnimation(false)
+                    }}
+                >
+                    {languages[language.id].graph[forecastType]}
+                </motion.p>
                 <Line options={options} data={dataGraph}></Line>
             </motion.div>
         </AnimatePresence>
@@ -121,14 +135,14 @@ const Graph = () => {
 
 export default Graph
 
-function getLabels(forecastType, language){
+function getLabels(forecastType, language, timezone){
     if(forecastType === 'today')
         if(window.innerWidth > 460)
             return labelsLang[language.id].long;
         else
             return labelsLang[language.id].med;
     else{
-        let date = new Date();
+        let date = changeTimeZone(new Date(), timezone);;
         date.setDate(date.getDate() + 1)
         let dates = [];
 
