@@ -72,8 +72,8 @@ const Graph = () => {
                     }
             }
         },
-        aniamation: {
-            duration: 10000
+        animation: {
+            duration: 2000
         }
     }
 

@@ -6,9 +6,9 @@ import "./main.css"
 const Main = () => {
   return (
     <main>
-      <GeneralInfo/>
-      <Forecast/>
-      <Graph/>
+      <GeneralInfo />
+      <Forecast />
+      <Graph />
     </main>
   )
 }

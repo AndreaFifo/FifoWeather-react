@@ -7,6 +7,8 @@ import { languages, weatherTranslate } from "../../../utils/dictionary";
 import { changeTimeZone } from "../../../utils/fetchData";
 
 export const GeneralInfo = () => {
+    console.log("General info render");
+
     const {data, language, unit} = useContext(MainContext);
 
     let date = changeTimeZone(new Date(), data.data.timezone);

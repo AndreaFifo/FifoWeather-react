@@ -1,11 +1,11 @@
 import { capitalizeString, weatherImg } from '../../../utils/weatherIcon';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { MainContext } from '../../../App';
 import { motion, AnimatePresence } from "framer-motion";
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { languages, weatherTranslate } from '../../../utils/dictionary';
-import '@splidejs/react-splide/css';
 import { changeTimeZone } from '../../../utils/fetchData';
+import '@splidejs/react-splide/css';
 
 const Forecast = () => {
   const splide = useRef();
@@ -105,6 +105,8 @@ const Forecast = () => {
 export default Forecast
 
 const DivForecast = ({data, date, index, unit, forecastType, lang, firstAnimation}) => {
+  console.log("Div forecast render");
+
   if(forecastType === 'week'){
     date.setDate(date.getDate() + 1)
   }

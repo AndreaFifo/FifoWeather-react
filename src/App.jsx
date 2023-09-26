@@ -9,13 +9,11 @@ export const GlobalContext = createContext();
 export const MainContext = createContext();
 
 //Custom hook
-const useStorageState = (localStorageKey, initialState, type) => {
+export const useStorageState = (localStorageKey, initialState, type) => {
   let storedValue = localStorage.getItem(localStorageKey);
-  let finalValue;
-  if(!storedValue){
+  let finalValue = initialState;
+  if(!storedValue)
     localStorage.setItem(localStorageKey, type === 'var' ? initialState : JSON.stringify(initialState));
-    finalValue = initialState;
-  }
   else
     finalValue = type === 'var' ? storedValue : JSON.parse(storedValue);
 
@@ -36,12 +34,13 @@ const App = () => {
   const [data, setData] = useState({});
   const [firstAnimation, setFirstAnimation] = useState(true);
   const [loading, setLoading] = useState(true);
+
   //It does the same thing of window.onLoad
   useEffect(() => {
-  
     document.body.setAttribute('data-theme', localStorage.getItem('theme'));
+    if(!localStorage.getItem('chronology'))
+      localStorage.setItem('chronology', JSON.stringify([]));
   }, []);
-
 
   const themeHandle = (e) => {
     if(theme === e.target.id)
@@ -73,7 +72,6 @@ const App = () => {
       setFirstAnimation(firstAnim);
       setForecastType('today');
     }
-
   }
 
   useEffect(() => {
@@ -83,7 +81,9 @@ const App = () => {
       searchDataHandle(data.city, false, true, data.lat, data.lon, data.country, data.region);
       return;
     }
-  }, [unit, language])
+  }, [unit, language]);
+
+  console.log("App render");
   
   return (
     <>
