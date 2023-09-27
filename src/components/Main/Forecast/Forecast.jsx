@@ -120,7 +120,9 @@ const DivForecast = ({data, date, index, unit, forecastType, lang, firstAnimatio
       {forecastType === 'today' && (<p className="hour">{date.getHours() + index}:00</p>)}
       {forecastType === 'week' && (<p className="hour">{capitalizeString(date.toLocaleString(lang.id, { weekday: 'short'})) + ' ' + date.getDate()}</p>)}
 
-      <img src={weatherImg(data[1].weather[0].icon, forecastType === 'day' ? date.getHours() : 7)} alt="icon" loading='lazy'/>
+      <picture>
+        <img src={weatherImg(data[1].weather[0].icon, forecastType === 'day' ? date.getHours() : 7)} alt="icon" loading='lazy'/>
+      </picture>
 
       <div className="bottom-text">
         <h2 className="temp">{Math.round(typeof data[1].temp === 'number' ? data[1].temp : avgArray(Object.values(data[1].temp))) + '°' +unit}</h2> 

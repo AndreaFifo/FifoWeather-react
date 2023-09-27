@@ -105,10 +105,10 @@
 
   --language-dropdown: #162439;
 
-  --skeleton-animation: #1D2F49;
-  --skeleton-animation-shade: #253C5E;
-  --skeleton-animation-other-info: #223D60;
-  --skeleton-animation-other-info-shade: #2A4C77;
+  --skeleton-color1: #223958;
+  --skeleton-color2: #29446d;
+  --skeleton-other-info1: #223D60;
+  --skeleton-other-info2: #2A4C77;
 }
 
 *{

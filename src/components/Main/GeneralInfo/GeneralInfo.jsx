@@ -7,8 +7,6 @@ import { languages, weatherTranslate } from "../../../utils/dictionary";
 import { changeTimeZone } from "../../../utils/fetchData";
 
 export const GeneralInfo = () => {
-    console.log("General info render");
-
     const {data, language, unit} = useContext(MainContext);
 
     let date = changeTimeZone(new Date(), data.data.timezone);
@@ -79,10 +77,13 @@ export const GeneralInfo = () => {
                 </div>
 
                 <div className="weather">
-                    <motion.img src={weatherImg(data.data.current.weather[0].icon, date.getHours())} alt="current weather"
-                        initial={{opacity: 0}}
-                        animate={{opacity: 1, transition: {ease: 'easeInOut', duration: 0.7, delay: 1}}}
-                    />
+                    <picture>
+                        <motion.img src={weatherImg(data.data.current.weather[0].icon, date.getHours())} alt="current weather"
+                            initial={{opacity: 0}}
+                            animate={{opacity: 1, transition: {ease: 'easeInOut', duration: 0.7, delay: 1}}}
+                        />
+                    </picture>
+                    
                     
                     <div className="text">
                         <motion.h2 
@@ -106,17 +107,17 @@ export const GeneralInfo = () => {
                     animate={"visible"}
                 >
                     <motion.div className="wind" variants={variantListItem}>
-                        <Wind size={22}/>
+                        <picture><Wind size={22}/></picture>
                         <h4>{data.data.current.wind_speed} {unit === 'C' ? 'm/s' : 'mph'}</h4>
                         <p>{languages[language.id].generalData.otherInfo['wind']}</p>
                     </motion.div>
                     <motion.div className="humidity" variants={variantListItem}>
-                        <Droplet size={22}/>
+                        <picture><Droplet size={22}/></picture>
                         <h4>{data.data.current.humidity}%</h4>
                         <p>{languages[language.id].generalData.otherInfo['humidity']}</p>
                     </motion.div>
                     <motion.div className="pressure" variants={variantListItem}>
-                        <CornerRightDown size={22}/>
+                        <picture><CornerRightDown size={22}/></picture>
                         <h4>{data.data.current.pressure} hPa</h4>
                         <p>{languages[language.id].generalData.otherInfo['pressure']}</p> 
                     </motion.div>

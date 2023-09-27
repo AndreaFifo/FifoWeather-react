@@ -33,7 +33,7 @@ const App = () => {
   const [forecastType, setForecastType] = useState('today');
   const [data, setData] = useState({});
   const [firstAnimation, setFirstAnimation] = useState(true);
-  const [loading, setLoading] = useState(true);
+  const [skeletonLoading, setSkeletonLoading] = useState(false);
 
   //It does the same thing of window.onLoad
   useEffect(() => {
@@ -54,6 +54,7 @@ const App = () => {
     if(language === e.target.id)
       return;
 
+    setSkeletonLoading(true);
     setLanguage({id: e.target.id, locale: e.target.attributes.locale.value});
   }
 
@@ -61,6 +62,7 @@ const App = () => {
     if(unit === e.target.id)
       return;
 
+    setSkeletonLoading(true);
     setUnit(e.target.id);
   }
 
@@ -72,6 +74,8 @@ const App = () => {
       setFirstAnimation(firstAnim);
       setForecastType('today');
     }
+    else
+      setSkeletonLoading(false);
   }
 
   useEffect(() => {
@@ -100,7 +104,7 @@ const App = () => {
         <Navbar />
       </GlobalContext.Provider>
 
-      <MainContext.Provider value={{ data, theme, language, unit, forecastType: {forecastType, setForecastType}, firstAnimation: {firstAnimation, setFirstAnimation}}}>
+      <MainContext.Provider value={{ data, theme, language, unit, forecastType: {forecastType, setForecastType}, firstAnimation: {firstAnimation, setFirstAnimation}, skeletonLoading}}>
         {Object.keys(data).length !== 0 && (<Main/>)}
       </MainContext.Provider>
     </>

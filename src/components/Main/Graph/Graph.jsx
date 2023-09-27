@@ -127,7 +127,9 @@ const Graph = () => {
                 >
                     {languages[language.id].graph[forecastType]}
                 </motion.p>
-                <Line options={options} data={dataGraph}></Line>
+                <div>
+                    <Line options={options} data={dataGraph}></Line>
+                </div>
             </motion.div>
         </AnimatePresence>
     )

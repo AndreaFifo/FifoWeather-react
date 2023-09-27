@@ -30,10 +30,6 @@ main{
     div#root{
         padding: 20px 6%;
     }
-
-    .general-info img{
-        width: 150px !important;
-    }
 }
 
 main .general-info{
@@ -79,6 +75,12 @@ main .general-info{
             justify-content: space-between;
 }
 
+.header .city-date{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
 .header .city-date .day{
     font-family: 'Lexend-Medium';
     color: var(--secondary);
@@ -91,9 +93,12 @@ main .general-info{
 }
 
 .header .city-date .city{
+    width: 100%;
+
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    gap: 5px;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
@@ -102,6 +107,10 @@ main .general-info{
         -ms-flex-pack: center;
             justify-content: center;
 
+}
+
+.header p, .header small{
+    width: max-content;
 }
 
 .header .city-date .city p{
@@ -134,6 +143,10 @@ main .general-info{
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
+}
+
+.general-info .weather, .weather .text{
+    gap: 5px;
 }
 
 .weather .text h2{
@@ -202,6 +215,10 @@ main .general-info{
     color: rgb(218, 218, 218);
 }
 
+.other-info picture{
+    height: 22px;
+}
+
 @media screen and (max-width: 1005px){
     #root{
         gap: 40px !important;
@@ -229,7 +246,7 @@ main .general-info{
     }
 
     .general-info .weather img{
-        width: 100px;
+        width: 125px;
     }
 
     main .general-info{
@@ -239,7 +256,13 @@ main .general-info{
     }
 }
 
-@media screen and (max-width: 370px){
+@media screen and (max-width: 600px){
+    .general-info .weather img{
+        width: 100px;
+    }
+}
+
+@media screen and (max-width: 371px){
     main .general-info{
         padding: 20px 15px;
         gap: 30px;
@@ -393,6 +416,12 @@ main .general-info{
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
+
+    gap: 5px;
+}
+
+.skeleton .splide__slide .bottom-text *{
+    width: max-content;
 }
 
 .splide__slide img{
@@ -473,6 +502,8 @@ main .general-info{
     font-family: 'Lexend-Medium';
     font-size: 18px;
 
+    margin-bottom: 5px;
+
     position: relative;
 
     width: -webkit-max-content;
@@ -520,6 +551,9 @@ main .general-info{
     }
 }
 
+.graph div{
+    height: 100%;
+}
 .graph canvas{
     width: 100% !important;
 }
@@ -711,7 +745,7 @@ main .general-info{
 
 @media screen and (max-height: 800px){
     .graph{
-        max-height: 250px;
+        max-height: 273px;
     }
 }
 
@@ -727,154 +761,76 @@ main .general-info{
     }
 }
 
-.skeleton{
-    background: -webkit-gradient(linear, left top, right top, from(var(--skeleton-animation)), color-stop(50%, var(--skeleton-animation-shade)), to(var(--skeleton-animation)));
-    background: -o-linear-gradient(left, var(--skeleton-animation) 0%, var(--skeleton-animation-shade) 50%, var(--skeleton-animation) 100%);
-    background: linear-gradient(90deg, var(--skeleton-animation) 0%, var(--skeleton-animation-shade) 50%, var(--skeleton-animation) 100%);
-    background-size: 200% 100%;
-    
+/* Skeleton animation on changing language or unit */
+.skeleton .general-info *:not(div), .skeleton .forecast .forecast-div *:not(div), .skeleton .type, .skeleton .graph div{
+    position: relative;
+}
+
+.skeleton .general-info *:not(div)::after, 
+.skeleton .forecast .forecast-div *:not(div)::after, 
+.skeleton .general-info .other-info div *::after, 
+.skeleton .type::after, 
+.skeleton .types .line::after,
+.skeleton .graph *::before{
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
     border-radius: 4px;
-    -webkit-animation: skeletonLoading 2.5s infinite;
-            animation: skeletonLoading 2.5s infinite;
 }
 
-.skeleton-loading .city-date{
-    width: 100%;
-    min-width: 117px;
+.skeleton .graph div::before{
+    height: calc(100% - 23px);
 
-    display: -webkit-box;
-
-    display: -ms-flexbox;
-
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
-    gap: 5px;
+    background-image: linear-gradient(90deg, var(--skeleton-color1) 0px, var(--skeleton-color2) 40px, var(--skeleton-color1) 80px);
+    background-size: 750px;
+    animation: fadeIn 0.3s ease-in forwards, skeletonAnimationGraph 1.5s infinite 0.3s;
 }
 
-.skeleton-loading .city-date .skeleton:nth-child(odd){
-    width: 50%;
-    height: 20px;
+.skeleton .general-info *:not(div)::after, .skeleton .forecast .forecast-div *:not(div)::after, .skeleton .type::after, .skeleton .types .line::after, .skeleton .graph p::before{
+    background-image: linear-gradient(90deg, var(--skeleton-color1) 0px, var(--skeleton-color2) 40px, var(--skeleton-color1) 80px);
+    background-size: 350px;
+    animation: fadeIn 0.3s ease-in forwards, skeletonAnimation 1.5s infinite 0.3s;
 }
 
-.skeleton-loading .city-date .skeleton:nth-child(even){
-    width: 70%;
-    height: 38px;
+.skeleton .general-info .other-info div::after{
+    background-image: linear-gradient(90deg, var(--skeleton-other-info1) 0px, var(--skeleton-other-info2) 40px, var(--skeleton-other-info1) 80px);
+    background-size: 350px;
+    animation: fadeIn 0.3s ease-in forwards, skeletonAnimation 1.5s infinite 0.3s;
 }
 
-.skeleton-loading .header > .skeleton{
-    width: 70px;
-    height: 55px;
+.skeleton .general-info .weather picture::after, .skeleton .forecast-div picture::after{
+    border-radius: 50% !important;
 }
 
-.skeleton-loading .weather{
-    gap: 25px;
+.skeleton .types .line{
+    height: 3px;
 }
 
-.skeleton-loading .weather > .skeleton{
-    width: 40%;
-    min-width: 100px;
-    max-width: 115px;
-    height: 100px;
-}
-
-.skeleton-loading .text{
-    width: 100%;
-    gap: 15px;
-}
-
-.skeleton-loading .text .skeleton:first-child{
-    width: calc(60% + 20px);
-    max-width: 200px;
-    height: 40px;
-}
-
-.skeleton-loading .text .skeleton:last-child{
-    width: calc(80% + 20px);
-    max-width: 250px;
-    height: 30px;
-}
-
-.skeleton-loading .other-info .skeleton{
-    background: -webkit-gradient(linear, left top, right top, from(var(--skeleton-animation-other-info)), color-stop(50%, var(--skeleton-animation-other-info-shade)), to(var(--skeleton-animation-other-info)));
-    background: -o-linear-gradient(left, var(--skeleton-animation-other-info) 0%, var(--skeleton-animation-other-info-shade) 50%, var(--skeleton-animation-other-info) 100%);
-    background: linear-gradient(90deg, var(--skeleton-animation-other-info) 0%, var(--skeleton-animation-other-info-shade) 50%, var(--skeleton-animation-other-info) 100%);;
-    background-size: 200% 100%;
-
-    width: calc(33% - 10px);
-    height: 70px;
-}
-
-.skeleton-forecast{
-    -webkit-box-pack: space-evenly;
-        -ms-flex-pack: space-evenly;
-            justify-content: space-evenly;
-}
-
-.skeleton-forecast > .skeleton:first-child{
-    width: 40px;
-    height: 20px;
-} 
-
-.skeleton-forecast .skeleton.img{
-    width: 60px;
-    height: 50px;
-}
-
-.skeleton-forecast .bottom-text{
-    width: 100%;
-
-    gap: 10px;
-}
-
-.skeleton-forecast .bottom-text .skeleton:first-child{
-    width: 70%;
-    height: 25px;
-}
-
-.skeleton-forecast .bottom-text .skeleton:last-child{
-    width: 50%;
-    height: 20px;
-}
-
-.graph.skeleton{
-    height: calc(100% - 7px);
-
-    display: -webkit-box;
-
-    display: -ms-flexbox;
-
-    display: flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
-}
-
-.graph.skeleton svg{
-    opacity: 0.4;
-
-    color: var(--primary);
-}
-
-@-webkit-keyframes skeletonLoading{
+@keyframes skeletonAnimationGraph{
     0%{
-        background-position: 100% 0;
+        background-position: 0;
     }
     100%{
-        background-position: -100% 0;
+        background-position: 750px;
     }
 }
 
-@keyframes skeletonLoading{
+@keyframes skeletonAnimation{
     0%{
-        background-position: 100% 0;
+        background-position: 0;
     }
     100%{
-        background-position: -100% 0;
+        background-position: 350px;
+    }
+}
+
+@keyframes fadeIn{
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
     }
 }
