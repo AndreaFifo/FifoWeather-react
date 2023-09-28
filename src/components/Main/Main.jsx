@@ -7,9 +7,9 @@ import "./main.css"
 
 const Main = () => {
   const { skeletonLoading } = useContext(MainContext);
-
+  
   return (
-    <main className={skeletonLoading ? 'skeleton' : ''}>
+    <main className={skeletonLoading ? 'skeleton' : null}>
       <GeneralInfo />
       <Forecast />
       <Graph />

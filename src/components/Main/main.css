@@ -647,7 +647,9 @@ main .general-info{
         gap: 7px;
     }
 
-    .general-info .other-info svg{
+
+
+    .general-info .other-info svg, .general-info .other-info picture{
         width: 28px;
         height: 28px;
     }
@@ -794,7 +796,7 @@ main .general-info{
     animation: fadeIn 0.3s ease-in forwards, skeletonAnimation 1.5s infinite 0.3s;
 }
 
-.skeleton .general-info .other-info div::after{
+.skeleton .general-info .other-info div *::after{
     background-image: linear-gradient(90deg, var(--skeleton-other-info1) 0px, var(--skeleton-other-info2) 40px, var(--skeleton-other-info1) 80px);
     background-size: 350px;
     animation: fadeIn 0.3s ease-in forwards, skeletonAnimation 1.5s infinite 0.3s;
@@ -802,6 +804,10 @@ main .general-info{
 
 .skeleton .general-info .weather picture::after, .skeleton .forecast-div picture::after{
     border-radius: 50% !important;
+}
+
+.skeleton .general-info .weather picture img, .skeleton .forecast-div picture img{
+    visibility: hidden;
 }
 
 .skeleton .types .line{

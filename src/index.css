@@ -69,6 +69,11 @@
   --forecast-types-hover: #3e597c;
 
   --language-dropdown: #BDE4FD;
+
+  --skeleton-color1: #8CD4FF;
+  --skeleton-color2: #A2DCFF;
+  --skeleton-other-info1: #4D72A1;
+  --skeleton-other-info2: #5988C3;
 }
 
 [data-theme='dark']{

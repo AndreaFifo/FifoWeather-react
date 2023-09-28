@@ -105,8 +105,6 @@ const Forecast = () => {
 export default Forecast
 
 const DivForecast = ({data, date, index, unit, forecastType, lang, firstAnimation}) => {
-  console.log("Div forecast render");
-
   if(forecastType === 'week'){
     date.setDate(date.getDate() + 1)
   }

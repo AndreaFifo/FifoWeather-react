@@ -28,9 +28,9 @@ export const fetchData = async (options) => {
     }
 }
 
-export const fetchCities = async (searchTerm) => {
+export const fetchCities = async (searchTerm, cancelToken) => {
     try {
-        const cities = await axios.get(`https://api.geocode.city/autocomplete?q=${searchTerm}`);
+        const cities = await axios.get(`https://api.geocode.city/autocomplete?q=${searchTerm}`, { cancelToken: cancelToken });
 
         return cities.data;
     } catch (error) {

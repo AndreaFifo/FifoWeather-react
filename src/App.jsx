@@ -86,8 +86,6 @@ const App = () => {
       return;
     }
   }, [unit, language]);
-
-  console.log("App render");
   
   return (
     <>

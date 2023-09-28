@@ -3,6 +3,7 @@ import { GlobalContext } from '../../../App';
 import { Search, X, MapPin, Trash2 } from 'react-feather';
 import { languages } from "../../../utils/dictionary";
 import { fetchCities, addNewSearchedCity } from "../../../utils/fetchData";
+import axios from "axios";
 
 document.addEventListener('click', function(event) {
     const dropdown = document.querySelector('.dropdown-search');
@@ -52,11 +53,20 @@ const Searchbar = () => {
 const DropDown = ({searchTerm: {searchTerm, setSearchTerm}, language, searchDataHandle }) => {
     const [cities, setCities] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    let cancelToken;
 
     async function getCities(searchTerm){
         setIsLoading(true);
+
+        //Uso questo per evitare che scrivendo un città vengano visualizzate le
+        //città richieste nella request precedente.
+        if(typeof cancelToken !== typeof undefined)
+            cancelToken.cancel();
+
+        cancelToken = axios.CancelToken.source();
+
         try{
-            const citiesList = await fetchCities(searchTerm);
+            const citiesList = await fetchCities(searchTerm, cancelToken.token);
             setCities(citiesList);
             setIsLoading(false);
         }
