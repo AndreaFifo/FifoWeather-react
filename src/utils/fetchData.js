@@ -1,7 +1,11 @@
 import axios from 'axios';
 
 export const fetchData = async (options) => {
-    const { city, unit, language, data, unitLang, latitude, longitude, countryCode, region } = options;
+    const { city, unit, language, data, unitLang, latitude, longitude, countryCode, region, isOnline } = options;
+
+    if (!isOnline)
+        return;
+
     const apiKey = import.meta.env.VITE_APIKEY;
 
     try {
@@ -10,6 +14,8 @@ export const fetchData = async (options) => {
             response = await axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&units=${unit === 'C' ? 'metric' : 'imperial'}&lang=${language.id}&appid=${apiKey}`);
         else {
             coordinates = await axios.get(`https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKey}`);
+            if (!coordinates.data.length)
+                return 0;
             const { lat, lon } = coordinates.data[0];
             response = await axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=${unit === 'C' ? 'metric' : 'imperial'}&lang=${language.id}&appid=${apiKey}`);
             addNewSearchedCity({ name: city, region: coordinates.data[0].state, countryCode: coordinates.data[0].country, lat: coordinates.data[0].lat, lon: coordinates.data[0].lon });
@@ -28,7 +34,10 @@ export const fetchData = async (options) => {
     }
 }
 
-export const fetchCities = async (searchTerm, cancelToken) => {
+export const fetchCities = async (searchTerm, cancelToken, isOnline) => {
+    if (!isOnline)
+        return;
+
     try {
         const cities = await axios.get(`https://api.geocode.city/autocomplete?q=${searchTerm}`, { cancelToken: cancelToken });
 

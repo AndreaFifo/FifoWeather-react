@@ -74,6 +74,9 @@
   --skeleton-color2: #A2DCFF;
   --skeleton-other-info1: #4D72A1;
   --skeleton-other-info2: #5988C3;
+
+  --error-bg: #BDE4FD;
+  --error-icon: #71C0FF;
 }
 
 [data-theme='dark']{
@@ -114,6 +117,9 @@
   --skeleton-color2: #29446d;
   --skeleton-other-info1: #223D60;
   --skeleton-other-info2: #2A4C77;
+
+  --error-bg: #233c5c;
+  --error-icon: #617FAD;
 }
 
 *{
@@ -156,7 +162,7 @@ body {
   overflow-x: hidden;
 }
 
-#root > *{
+#root > *:not(.error-container){
   width: 100%;
   max-width: 1400px;
 }

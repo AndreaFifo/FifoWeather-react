@@ -1,8 +1,9 @@
 import Navbar from './components/NavBar/Navbar';
 import Main from './components/Main/Main';
 import { fetchData } from './utils/fetchData';
-import { useState, useEffect, createContext} from 'react';
+import { useState, useEffect, createContext, useSyncExternalStore } from 'react';
 import './App.css';
+import Error from './components/Main/Error/Error';
 
 //Creation of context to manage states globally
 export const GlobalContext = createContext();
@@ -26,6 +27,24 @@ export const useStorageState = (localStorageKey, initialState, type) => {
   return [value, setValue];
 }
 
+const useOnlineStatus = () => {
+  const isOnline = useSyncExternalStore(onlineOfflineSubscribe, getConnectionStatut);
+  return isOnline;
+}
+
+function getConnectionStatut() {
+  return navigator.onLine;
+}
+
+function onlineOfflineSubscribe(callback) {
+  window.addEventListener('online', callback);
+  window.addEventListener('offline', callback);
+  return () => {
+    window.removeEventListener('online', callback);
+    window.removeEventListener('offline', callback);
+  };
+}
+
 const App = () => {
   const [theme, setTheme] = useStorageState('theme', 'light', 'var');
   const [language, setLanguage] = useStorageState('lang', {id: 'en', locale: 'en-US'}, 'object');
@@ -34,6 +53,13 @@ const App = () => {
   const [data, setData] = useState({});
   const [firstAnimation, setFirstAnimation] = useState(true);
   const [skeletonLoading, setSkeletonLoading] = useState(false);
+  const [cityNotFound, setCityNotFound] = useState(false);
+
+  const isOnline = useOnlineStatus();
+
+  useEffect(() => {
+    !isOnline ? setCityNotFound(false) : null;
+  });
 
   //It does the same thing of window.onLoad
   useEffect(() => {
@@ -67,8 +93,15 @@ const App = () => {
   }
 
   const searchDataHandle = async (city, firstAnim, unitLang, latitude=null, longitude=null, countryCode=null, region=null) => {
-    const dt = await fetchData({city, unit, language, data, unitLang, latitude, longitude, countryCode, region});
-    setData(dt);
+    const dt = await fetchData({city, unit, language, data, unitLang, latitude, longitude, countryCode, region, isOnline});
+    if(dt !== 0){
+      setData(dt);
+      cityNotFound ? setCityNotFound(false) : null; 
+    }
+    else{
+      setCityNotFound(true);
+      return;
+    }
 
     if(!unitLang){
       setFirstAnimation(firstAnim);
@@ -87,26 +120,35 @@ const App = () => {
     }
   }, [unit, language]);
   
-  return (
-    <>
-      <GlobalContext.Provider 
-        value={
-          {
-            theme: {theme, themeHandle}, 
-            language: {language, languageHandle},
-            unit: {unit, unitHandle},
-            searchDataHandle
+  try{
+    return (
+      <>
+        <GlobalContext.Provider 
+          value={
+            {
+              theme: {theme, themeHandle}, 
+              language: {language, languageHandle},
+              unit: {unit, unitHandle},
+              searchDataHandle,
+              isOnline
+            }
           }
-        }
-      >
-        <Navbar />
-      </GlobalContext.Provider>
+        >
+          <Navbar />
+        </GlobalContext.Provider>
 
-      <MainContext.Provider value={{ data, theme, language, unit, forecastType: {forecastType, setForecastType}, firstAnimation: {firstAnimation, setFirstAnimation}, skeletonLoading}}>
-        {Object.keys(data).length !== 0 && (<Main/>)}
-      </MainContext.Provider>
-    </>
-  )
+        <MainContext.Provider value={{ data, theme, language, unit, forecastType: {forecastType, setForecastType}, firstAnimation: {firstAnimation, setFirstAnimation}, skeletonLoading}}>
+          {!isOnline && (<Error type="connection"/>)}
+          {cityNotFound && (<Error type="cityNotFound"/>)}
+          
+          {(Object.keys(data).length !== 0 && !cityNotFound && isOnline) && (<Main/>)}
+        </MainContext.Provider>
+      </>
+    )
+  }
+  catch(error){
+    console.log(error);
+  }
 }
 
 export default App

@@ -16,7 +16,7 @@ document.addEventListener('click', function(event) {
 });
 
 const Searchbar = () => {
-    const { searchDataHandle, language: {language} } = useContext(GlobalContext);
+    const { searchDataHandle, language: {language}, isOnline } = useContext(GlobalContext);
     const [searchTerm, setSearchTerm] = useState('');
 
     return (
@@ -45,12 +45,16 @@ const Searchbar = () => {
                 searchTerm={{searchTerm, setSearchTerm}} 
                 language={language} 
                 searchDataHandle={searchDataHandle}
+                isOnline={isOnline}
             />
         </form>
     )
 }
 
-const DropDown = ({searchTerm: {searchTerm, setSearchTerm}, language, searchDataHandle }) => {
+const DropDown = ({searchTerm: {searchTerm, setSearchTerm}, language, searchDataHandle, isOnline }) => {
+    if(!isOnline)
+        return;
+
     const [cities, setCities] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     let cancelToken;
@@ -66,7 +70,7 @@ const DropDown = ({searchTerm: {searchTerm, setSearchTerm}, language, searchData
         cancelToken = axios.CancelToken.source();
 
         try{
-            const citiesList = await fetchCities(searchTerm, cancelToken.token);
+            const citiesList = await fetchCities(searchTerm, cancelToken.token, isOnline);
             setCities(citiesList);
             setIsLoading(false);
         }

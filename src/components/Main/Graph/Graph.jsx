@@ -115,7 +115,7 @@ const Graph = () => {
         <AnimatePresence mode="wait">
             <motion.div className="graph" key={data.id}
                 initial={{y: 40, opacity: 0}}
-                animate={{y: 0, opacity: 1, transition: {ease:'easeInOut', duration: 0.8, delay: 5.7}}}
+                animate={{y: 0, opacity: 1, transition: {ease:'easeInOut', duration: 0.8, delay: firstAnimation ? 5.7 : 0}}}
                 exit={{y: 40, opacity: 0, transition: {ease:'easeInOut', duration: 0.7}}}
             >
                 <motion.p key={forecastType}
