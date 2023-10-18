@@ -76,7 +76,7 @@
   --skeleton-other-info2: #5988C3;
 
   --error-bg: #BDE4FD;
-  --error-icon: #71C0FF;
+  --error-icon: var(--secondary);
 }
 
 [data-theme='dark']{

@@ -1,5 +1,5 @@
 import { Wind, Droplet, CornerRightDown} from "react-feather";
-import { MainContext } from "../../../App";
+import { GlobalContext, MainContext } from "../../../App";
 import { useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { capitalizeString, weatherImg } from "../../../utils/weatherIcon";
@@ -7,7 +7,8 @@ import { languages, weatherTranslate } from "../../../utils/dictionary";
 import { changeTimeZone } from "../../../utils/fetchData";
 
 export const GeneralInfo = () => {
-    const {data, language, unit} = useContext(MainContext);
+    const {data} = useContext(MainContext);
+    const {language: {language}, unit: {unit}} = useContext(GlobalContext);
 
     let date = changeTimeZone(new Date(), data.data.timezone);
 

@@ -25,7 +25,7 @@ const Navbar = () => {
                     <div className="line" />
                 </div>
 
-                <div className={sideMenu ? "settings show" : "settings"}>
+                <div className={sideMenu ? "settings show-nav" : "settings"}>
                     <ThemeSlider />
                     <LanguageMenu />
                     <Units />

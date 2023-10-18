@@ -588,7 +588,7 @@ input:focus ~ .dropdown-search, .dropdown-search.open:hover, .dropdown-search:fo
         transform: rotate(45deg) translate(-7px, 7px);
     }
     
-    .settings.show{
+    .settings.show-nav{
         transform: translateX(-50%);
     }
 

@@ -4,6 +4,7 @@ import { fetchData } from './utils/fetchData';
 import { useState, useEffect, createContext, useSyncExternalStore } from 'react';
 import './App.css';
 import Error from './components/Main/Error/Error';
+import Loading from './components/Loading/Loading';
 
 //Creation of context to manage states globally
 export const GlobalContext = createContext();
@@ -54,6 +55,7 @@ const App = () => {
   const [firstAnimation, setFirstAnimation] = useState(true);
   const [skeletonLoading, setSkeletonLoading] = useState(false);
   const [cityNotFound, setCityNotFound] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const isOnline = useOnlineStatus();
 
@@ -66,6 +68,14 @@ const App = () => {
     document.body.setAttribute('data-theme', localStorage.getItem('theme'));
     if(!localStorage.getItem('chronology'))
       localStorage.setItem('chronology', JSON.stringify([]));
+
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+
+    return () => {
+      clearTimeout(timeout);
+    }
   }, []);
 
   const themeHandle = (e) => {
@@ -123,26 +133,30 @@ const App = () => {
   try{
     return (
       <>
-        <GlobalContext.Provider 
-          value={
-            {
-              theme: {theme, themeHandle}, 
-              language: {language, languageHandle},
-              unit: {unit, unitHandle},
-              searchDataHandle,
-              isOnline
+        {
+          isLoading ? 
+          <Loading /> 
+          :
+          (<><GlobalContext.Provider 
+            value={
+              {
+                theme: {theme, themeHandle}, 
+                language: {language, languageHandle},
+                unit: {unit, unitHandle},
+                searchDataHandle,
+                isOnline
+              }
             }
-          }
-        >
-          <Navbar />
-        </GlobalContext.Provider>
-
-        <MainContext.Provider value={{ data, theme, language, unit, forecastType: {forecastType, setForecastType}, firstAnimation: {firstAnimation, setFirstAnimation}, skeletonLoading}}>
-          {!isOnline && (<Error type="connection"/>)}
-          {cityNotFound && (<Error type="cityNotFound"/>)}
-          
-          {(Object.keys(data).length !== 0 && !cityNotFound && isOnline) && (<Main/>)}
-        </MainContext.Provider>
+          >
+            <Navbar />
+            <MainContext.Provider value={{ data, forecastType: {forecastType, setForecastType}, firstAnimation: {firstAnimation, setFirstAnimation}, skeletonLoading}}>
+              {!isOnline && (<Error type="connection"/>)}
+              {cityNotFound && (<Error type="cityNotFound"/>)}
+              
+              {(Object.keys(data).length !== 0 && !cityNotFound && isOnline) && (<Main/>)}
+            </MainContext.Provider>
+          </GlobalContext.Provider></>)
+        }
       </>
     )
   }

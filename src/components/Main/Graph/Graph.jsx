@@ -2,7 +2,7 @@ import { Line } from 'react-chartjs-2';
 import {Chart as ChartJS, LineElement, CategoryScale, LinearScale, PointElement, Filler} from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { useContext, useEffect, useState } from 'react';
-import { MainContext } from '../../../App';
+import { GlobalContext, MainContext } from '../../../App';
 import { capitalizeString } from '../../../utils/weatherIcon';
 import { languages } from '../../../utils/dictionary';
 import { motion, AnimatePresence } from "framer-motion";
@@ -11,7 +11,8 @@ import { changeTimeZone } from '../../../utils/fetchData';
 ChartJS.register(LineElement, ChartDataLabels, CategoryScale, LinearScale, PointElement, Filler);
 
 const Graph = () => {
-    const {data, language, theme, firstAnimation: {firstAnimation, setFirstAnimation}, forecastType: {forecastType}} = useContext(MainContext);
+    const {data, firstAnimation: {firstAnimation, setFirstAnimation}, forecastType: {forecastType}} = useContext(MainContext);
+    const {language: {language}, theme: {theme}} = useContext(GlobalContext);
 
     const [labels, setLabels] = useState(getLabels(forecastType, language));
 

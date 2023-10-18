@@ -1,0 +1,192 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.container {
+  width: 100%;
+  height: calc(100vh - 20px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 20px;
+}
+
+.container p {
+  font-size: 32px;
+  color: var(--primary);
+}
+
+.container .slider {
+  width: 50vw;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+}
+.container .slider .icon {
+  width: 80px;
+
+  color: var(--primary);
+}
+.container .icon path,
+.container .icon polyline,
+.container .icon circle,
+.container .icon line {
+  fill: transparent;
+  stroke-width: 1.3;
+} 
+
+/* Thunder */
+.container .icon.thunder polyline {
+  stroke-dasharray: 48;
+  stroke-dashoffset: 0;
+}
+.container .icon svg polyline {
+  animation: animate-thunder 1.3s infinite reverse;
+}
+@keyframes animate-thunder {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  40% {
+    stroke-dashoffset: 48;
+    opacity: 0;
+  }
+  100% {
+    stroke-dashoffset: 96;
+  }
+} 
+
+/* Rain */
+.container .icon.rain line {
+  stroke-dasharray: 10;
+  stroke-dashoffset: 0;
+}
+.container .icon.rain svg line {
+  animation: animate-rain 0.7s infinite reverse;
+}
+.container .icon.rain svg line:nth-child(1) {
+  animation-delay: 0.4s;
+}
+.container .icon.rain svg line:nth-child(2) {
+  animation-delay: 0.3s;
+}
+.container .icon.rain svg line:nth-child(3) {
+  animation-delay: 0.5s;
+}
+@keyframes animate-rain {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  40% {
+    stroke-dashoffset: 10;
+    opacity: 0;
+  }
+  100% {
+    stroke-dashoffset: 20;
+  }
+} 
+
+/* Snow */
+.container .icon.snow svg line {
+  animation: animate-snow 0.7s infinite;
+}
+.container .icon.snow svg line:nth-child(1) {
+  animation-delay: 0.3s;
+}
+.container .icon.snow svg line:nth-child(2) {
+  animation-delay: 0.4s;
+}
+.container .icon.snow svg line:nth-child(3) {
+  animation-delay: 0.2s;
+}
+.container .icon.snow svg line:nth-child(4) {
+  animation-delay: 0.1s;
+}
+.container .icon.snow svg line:nth-child(5) {
+  animation-delay: 0.5s;
+}
+.container .icon.snow svg line:nth-child(6) {
+  animation-delay: 0.3s;
+}
+@keyframes animate-snow {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(3px);
+    opacity: 0;
+  }
+} 
+
+/* Sun */
+.container .icon.sun svg {
+  animation: animate-sun 4s infinite linear;
+}
+@keyframes animate-sun {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.show{
+  animation: Show 2.999s ease-in-out;
+}
+
+@keyframes Show {
+  0%{
+    opacity: 0;
+  }
+  50%{
+    opacity: 1;
+  }
+  60%{
+    opacity: 1;
+  }
+  70%{
+    opacity: 1;
+  }
+  80%{
+    opacity: 1;
+  }
+  100%{
+    opacity: 0;
+  }
+}
+
+@media screen and (max-width: 940px) {
+  .container .slider {
+    width: 100%;
+    height: max-content;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+  }
+
+  .slider .icon{
+    width: 25%;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .container p{
+    font-size: 28px;
+  }
+}

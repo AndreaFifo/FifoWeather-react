@@ -1,6 +1,6 @@
 import { capitalizeString, weatherImg } from '../../../utils/weatherIcon';
 import { useContext, useEffect, useRef } from 'react';
-import { MainContext } from '../../../App';
+import { GlobalContext, MainContext } from '../../../App';
 import { motion, AnimatePresence } from "framer-motion";
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { languages, weatherTranslate } from '../../../utils/dictionary';
@@ -10,7 +10,8 @@ import '@splidejs/react-splide/css';
 const Forecast = () => {
   const splide = useRef();
 
-  const {data, unit, language, firstAnimation: {firstAnimation}, forecastType: {forecastType, setForecastType}} = useContext(MainContext);
+  const {data, firstAnimation: {firstAnimation}, forecastType: {forecastType, setForecastType}} = useContext(MainContext);
+  const {unit: {unit}, language: {language}} = useContext(GlobalContext);
   const arrayData = forecastType === 'today' ? Object.entries(data.data.hourly) : Object.entries(data.data.daily);
 
   let date = changeTimeZone(new Date(), data.data.timezone);

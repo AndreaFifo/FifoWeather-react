@@ -595,7 +595,7 @@ main .general-info{
 
 @media screen and (max-width: 450px) {
     .splide__slide .forecast-div{
-        max-width: 120px;
+        max-width: 130px;
     }
 
     .graph{
@@ -621,22 +621,13 @@ main .general-info{
     }
 }
 
-/* @media screen and (max-width: 1260px) and (min-width: 1005px){
-    .graph{
-        height: 250px;
-        padding: 0px 20px 20px;
-    }
-} */
-
 @media screen and (max-width: 350px){
     .graph{
         padding: 20px 0;
     }
 }
 
-@media screen and (min-height: 750px) and (min-width: 1005px) {
-    /* fai tuttti i fontsize del diopo a partire da 700 a 1440 procodoi */
-    
+@media screen and (min-height: 750px) and (min-width: 1005px) {   
     main{
         height: calc(100vh - 135px);
         gap: 80px;
@@ -659,8 +650,6 @@ main .general-info{
     .general-info .other-info div{
         gap: 7px;
     }
-
-
 
     .general-info .other-info svg, .general-info .other-info picture{
         width: 28px;

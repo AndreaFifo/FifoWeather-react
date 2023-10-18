@@ -1,5 +1,5 @@
 import { Wifi, MapPin } from "react-feather";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 
 const Error = ({ type }) => {
